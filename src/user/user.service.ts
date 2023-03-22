@@ -28,6 +28,12 @@ export class UserService {
     });
     return user;
   }
+  async findByEmail(email: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { email },
+    });
+    return user;
+  }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
     const newUser = await this.prisma.user.update({
@@ -35,6 +41,12 @@ export class UserService {
       data: updateUserDto,
     });
     return newUser;
+  }
+  async updatePassword(id: string, hashedPassword: string) {
+    await this.prisma.user.update({
+      where: { id },
+      data: { password: hashedPassword },
+    });
   }
 
   async remove(id: string) {
