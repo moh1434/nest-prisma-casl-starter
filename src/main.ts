@@ -1,12 +1,14 @@
-import { HttpAdapterHost, NestFactory } from '@nestjs/core';
+import { RolesGuard } from './auth/roles.decorator';
+import { HttpAdapterHost, NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { ValidationPipe } from './validation/validation.pipe';
 import { PrismaClientExceptionFilter, PrismaService } from 'nestjs-prisma';
 import { OurConfigService } from './global/config.service';
-import { VersioningType } from '@nestjs/common';
+import { ValidationPipe, VersioningType } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
 import * as morgan from 'morgan';
+import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import { COOKIE_AUTH_NAME } from './utils/constant';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -30,11 +32,30 @@ async function bootstrap() {
   const { httpAdapter } = app.get(HttpAdapterHost);
   app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter));
 
-  app.useGlobalPipes(new ValidationPipe());
+  // cookie
+  app.use(cookieParser(configService.cookieKey));
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      forbidNonWhitelisted: true,
+      whitelist: true,
+      transform: true,
+    }),
+  );
+
+  const reflector = app.get(Reflector);
+  app.useGlobalGuards(new JwtAuthGuard(reflector));
+  app.useGlobalGuards(new RolesGuard(reflector));
+
+  // log
+  if (configService.isDebug) {
+    app.use(morgan('dev'));
+  }
+
   //s: Swagger
   const config = new DocumentBuilder()
     .addBearerAuth(undefined, 'addBearerAuth')
-    .addCookieAuth('token', {
+    .addCookieAuth(COOKIE_AUTH_NAME, {
       type: 'http',
       in: 'Header',
       scheme: 'Bearer',
@@ -46,19 +67,9 @@ async function bootstrap() {
     .addTag('myTag')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-
   SwaggerModule.setup('api', app, document);
   //e: Swagger
-
-  // log
-  if (configService.isDebug) {
-    app.use(morgan('dev'));
-  }
-  // cookie
-  app.use(cookieParser(configService.cookieKey));
 
   await app.listen(configService.port);
 }
 bootstrap();
-
-//swigger rather than postman

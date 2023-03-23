@@ -1,32 +1,23 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Body, Patch, Param, Delete } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { JwtUser } from '../auth/user.decorator';
+import { Roles } from 'src/auth/roles.decorator';
+import { UserType } from '@prisma/client';
+import { TokenData } from 'src/auth/types-auth';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
-
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
-  }
 
   @Get()
   findAll() {
     return this.userService.findAll();
   }
 
+  @Roles(UserType.ADMIN)
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: string, @JwtUser() user: TokenData) {
     return this.userService.findOne(id);
   }
 

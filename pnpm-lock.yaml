@@ -13,6 +13,7 @@ specifiers:
   '@nestjs/swagger': ^6.2.1
   '@nestjs/testing': ^9.0.0
   '@prisma/client': ^4.11.0
+  '@types/bcrypt': ^5.0.0
   '@types/cookie-parser': ^1.4.3
   '@types/express': ^4.17.13
   '@types/jest': 29.2.4
@@ -31,6 +32,8 @@ specifiers:
   jest: 29.3.1
   morgan: ^1.10.0
   nestjs-prisma: ^0.20.0
+  passport: ^0.6.0
+  passport-jwt: ^4.0.1
   prettier: ^2.3.2
   prisma: ^4.11.0
   reflect-metadata: ^0.1.13
@@ -48,7 +51,7 @@ dependencies:
   '@nestjs/config': 2.3.1_jy37pi22pqa22ux5geb72eebiu
   '@nestjs/core': 9.3.12_qhubmme3ystyvorrsy6sfc2ome
   '@nestjs/jwt': 10.0.2_@nestjs+common@9.3.12
-  '@nestjs/passport': 9.0.3_@nestjs+common@9.3.12
+  '@nestjs/passport': 9.0.3_ajy2slul3age3kopk444psnhqq
   '@nestjs/platform-express': 9.3.12_ge4qplnzbmfyi5znl534zhtkn4
   '@nestjs/swagger': 6.2.1_56wskrocvqeup2a4dyvgnvm62u
   '@prisma/client': 4.11.0_prisma@4.11.0
@@ -58,6 +61,8 @@ dependencies:
   cookie-parser: 1.4.6
   morgan: 1.10.0
   nestjs-prisma: 0.20.0_5luejdwnmu5omhxasjlxpevbie
+  passport: 0.6.0
+  passport-jwt: 4.0.1
   reflect-metadata: 0.1.13
   rxjs: 7.8.0
 
@@ -66,6 +71,7 @@ devDependencies:
   '@nestjs/mapped-types': 1.2.2_5pvgaw2xy5j677zk7xp6almw2q
   '@nestjs/schematics': 9.0.4_typescript@4.9.5
   '@nestjs/testing': 9.3.12_ckvy3xuqd5ydy3ipiq7jufha44
+  '@types/bcrypt': 5.0.0
   '@types/cookie-parser': 1.4.3
   '@types/express': 4.17.17
   '@types/jest': 29.2.4
@@ -1072,13 +1078,14 @@ packages:
       class-validator: 0.14.0
       reflect-metadata: 0.1.13
 
-  /@nestjs/passport/9.0.3_@nestjs+common@9.3.12:
+  /@nestjs/passport/9.0.3_ajy2slul3age3kopk444psnhqq:
     resolution: {integrity: sha512-HplSJaimEAz1IOZEu+pdJHHJhQyBOPAYWXYHfAPQvRqWtw4FJF1VXl1Qtk9dcXQX1eKytDtH+qBzNQc19GWNEg==}
     peerDependencies:
       '@nestjs/common': ^8.0.0 || ^9.0.0
       passport: ^0.4.0 || ^0.5.0 || ^0.6.0
     dependencies:
       '@nestjs/common': 9.3.12_welcnyot5bzd5wa2aovbkxpi4i
+      passport: 0.6.0
     dev: false
 
   /@nestjs/platform-express/9.3.12_ge4qplnzbmfyi5znl534zhtkn4:
@@ -1299,6 +1306,12 @@ packages:
     resolution: {integrity: sha512-1kbcJ40lLB7MHsj39U4Sh1uTd2E7rLEa79kmDpI6cy+XiXsteB3POdQomoq4FxszMrO3ZYchkhYJw7A2862b3w==}
     dependencies:
       '@babel/types': 7.21.3
+    dev: true
+
+  /@types/bcrypt/5.0.0:
+    resolution: {integrity: sha512-agtcFKaruL8TmcvqbndlqHPSJgsolhf/qPWchFlgnW1gECTN/nKbFcoFnvKAQRFfKbh+BO6A3SWdJu9t+xF3Lw==}
+    dependencies:
+      '@types/node': 18.11.18
     dev: true
 
   /@types/body-parser/1.19.2:
@@ -4396,6 +4409,27 @@ packages:
     resolution: {integrity: sha512-CiyeOxFT/JZyN5m0z9PfXw4SCBJ6Sygz1Dpl0wqjlhDEGGBP1GnsUVEL0p63hoG1fcj3fHynXi9NYO4nWOL+qQ==}
     engines: {node: '>= 0.8'}
 
+  /passport-jwt/4.0.1:
+    resolution: {integrity: sha512-UCKMDYhNuGOBE9/9Ycuoyh7vP6jpeTp/+sfMJl7nLff/t6dps+iaeE0hhNkKN8/HZHcJ7lCdOyDxHdDoxoSvdQ==}
+    dependencies:
+      jsonwebtoken: 9.0.0
+      passport-strategy: 1.0.0
+    dev: false
+
+  /passport-strategy/1.0.0:
+    resolution: {integrity: sha512-CB97UUvDKJde2V0KDWWB3lyf6PC3FaZP7YxZ2G8OAtn9p4HI9j9JLP9qjOGZFvyl8uwNT8qM+hGnz/n16NI7oA==}
+    engines: {node: '>= 0.4.0'}
+    dev: false
+
+  /passport/0.6.0:
+    resolution: {integrity: sha512-0fe+p3ZnrWRW74fe8+SvCyf4a3Pb2/h7gFkQ8yTJpAO50gDzlfjZUZTO1k5Eg9kUct22OxHLqDZoKUWRHOh9ug==}
+    engines: {node: '>= 0.4.0'}
+    dependencies:
+      passport-strategy: 1.0.0
+      pause: 0.0.1
+      utils-merge: 1.0.1
+    dev: false
+
   /path-exists/4.0.0:
     resolution: {integrity: sha512-ak9Qy5Q7jYb2Wwcey5Fpvg2KoAc/ZIhLSLOSBmRmygPsGwkVVt0fZa0qrtMz+m6tJTAHfZQ8FnmB4MG4LWy7/w==}
     engines: {node: '>=8'}
@@ -4432,6 +4466,10 @@ packages:
     resolution: {integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==}
     engines: {node: '>=8'}
     dev: true
+
+  /pause/0.0.1:
+    resolution: {integrity: sha512-KG8UEiEVkR3wGEb4m5yZkVCzigAD+cVEJck2CzYZO37ZGJfctvVptVO192MwrtPhzONn6go8ylnOdMhKqi4nfg==}
+    dev: false
 
   /picocolors/1.0.0:
     resolution: {integrity: sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==}
