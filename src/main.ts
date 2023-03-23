@@ -73,3 +73,10 @@ async function bootstrap() {
   await app.listen(configService.port);
 }
 bootstrap();
+
+//already exists or not found Prisma errors.
+//permissions
+//upload images
+//redis
+//cacheWrapper
+//pm2 with logger
