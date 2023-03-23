@@ -1,4 +1,4 @@
-import { CreateUserDto } from '../user/dto/create-user.dto';
+import { RegisterUserDto } from './dto/create-user.dto';
 
 import { PasswordHashService } from '../global/password.helper';
 import { Injectable, UnauthorizedException, Body } from '@nestjs/common';
@@ -32,7 +32,7 @@ export class AuthService {
     };
   }
   //
-  async createAccount(body: CreateUserDto) {
+  async createAccount(body: RegisterUserDto) {
     const hashedPassword = await this.hash.hash(body.password);
     const createdUser = await this.userService.create({
       email: body.email,

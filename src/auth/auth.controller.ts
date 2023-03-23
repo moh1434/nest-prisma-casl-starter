@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 import { Controller, Post, Res, Body, Get, Req } from '@nestjs/common';
 import { Public } from './public.decorator';
 import { Response } from 'express';
-import { CreateUserDto } from '../user/dto/create-user.dto';
+import { RegisterUserDto } from './dto/create-user.dto';
 import { COOKIE_AUTH_NAME, SECURE_COOKIE_OPTION } from '../utils/constant';
 import { OurConfigService } from '../global/config.service';
 
@@ -16,7 +16,7 @@ export class AuthController {
 
   @Public()
   @Post('/register')
-  async register(@Body() body: CreateUserDto) {
+  async register(@Body() body: RegisterUserDto) {
     return await this.authService.createAccount(body);
   }
 
