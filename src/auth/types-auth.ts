@@ -5,4 +5,4 @@ export type TokenData = {
   type: UserType;
 };
 
-export type UserWithoutPassword = Omit<User, 'password'>;
+export type UserWithoutPassword = OmitStrict<User, 'password'>;

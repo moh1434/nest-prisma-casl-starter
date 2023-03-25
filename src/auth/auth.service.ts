@@ -38,8 +38,8 @@ export class AuthService {
       email: body.email,
       password: hashedPassword,
     });
-    delete createdUser['password'];
-    return createdUser as UserWithoutPassword;
+
+    return createdUser;
   }
   async login(body: LoginReqDto) {
     const validateUser = await this.validateUserPassword(
