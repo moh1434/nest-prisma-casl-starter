@@ -15,6 +15,11 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(OurConfigService).getConfig();
 
+  // log
+  if (configService.isDebug) {
+    app.use(morgan('dev'));
+  }
+
   // cors
   app.enableCors({
     origin: configService.frontendUrl,
@@ -47,11 +52,6 @@ async function bootstrap() {
   const reflector = app.get(Reflector);
   app.useGlobalGuards(new JwtAuthGuard(reflector));
   app.useGlobalGuards(new RolesGuard(reflector));
-
-  // log
-  if (configService.isDebug) {
-    app.use(morgan('dev'));
-  }
 
   //s: Swagger
   const config = new DocumentBuilder()
