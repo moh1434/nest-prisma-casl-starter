@@ -1,7 +1,7 @@
 import { Logger, Module } from '@nestjs/common';
 import { UserModule } from './user/user.module';
 import { PrismaModule } from 'nestjs-prisma';
-import { loggingMiddleware } from './middleware/logging.middleware';
+import { loggingMiddleware } from './global/logging.middleware';
 import { GlobalModule } from './global/global.module';
 import { AuthModule } from './auth/auth.module';
 
