@@ -1,14 +1,15 @@
 import { RolesGuard } from './auth/roles.decorator';
-import { HttpAdapterHost, NestFactory, Reflector } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { PrismaClientExceptionFilter, PrismaService } from 'nestjs-prisma';
+import { PrismaService } from 'nestjs-prisma';
 import { OurConfigService } from './global/config.service';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
 import * as morgan from 'morgan';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { COOKIE_AUTH_NAME } from './utils/constant';
+import { PrismaErrorInterceptor } from './global/prisma-error.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -28,9 +29,9 @@ async function bootstrap() {
   // enable shutdown hook
   const prismaService: PrismaService = app.get(PrismaService);
   await prismaService.enableShutdownHooks(app);
-  // Prisma Client Exception Filter for unhandled exceptions
-  const { httpAdapter } = app.get(HttpAdapterHost);
-  app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter));
+
+  // map prisma error
+  app.useGlobalInterceptors(new PrismaErrorInterceptor());
 
   // cookie
   app.use(cookieParser(configService.cookieKey));
