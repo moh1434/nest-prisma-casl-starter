@@ -13,3 +13,4 @@ export const IMAGE_FOLDER = 'images';
 
 //keys
 export const IS_PUBLIC_KEY = 'IS_PUBLIC';
+export const CHECK_POLICIES_KEY = 'CHECK_POLICY';

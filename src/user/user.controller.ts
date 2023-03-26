@@ -5,6 +5,11 @@ import { JwtUser } from '../auth/user.decorator';
 import { Roles } from 'src/auth/roles.decorator';
 import { UserType } from '@prisma/client';
 import { TokenData } from 'src/auth/types-auth';
+import { CheckPolicies } from '../casl/checkPolicies';
+import {
+  Action,
+  AppAbility,
+} from '../casl/casl-ability.factory/casl-ability.factory';
 
 @Controller('user')
 export class UserController {
@@ -15,7 +20,8 @@ export class UserController {
     return this.userService.findAll();
   }
 
-  @Roles(UserType.ADMIN)
+  // @Roles(UserType.ADMIN)
+  @CheckPolicies((ability: AppAbility) => ability.can(Action.Read, 'all'))
   @Get(':id')
   findOne(@Param('id') id: string, @JwtUser() user: TokenData) {
     return this.userService.findOne(id);

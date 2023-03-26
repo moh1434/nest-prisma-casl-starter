@@ -10,6 +10,8 @@ import * as morgan from 'morgan';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { COOKIE_AUTH_NAME } from './utils/constant';
 import { PrismaErrorInterceptor } from './global/prisma-error.interceptor';
+import { PoliciesGuard } from './casl/PoliciesGuard';
+import { CaslAbilityFactory } from './casl/casl-ability.factory/casl-ability.factory';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -51,7 +53,8 @@ async function bootstrap() {
 
   const reflector = app.get(Reflector);
   app.useGlobalGuards(new JwtAuthGuard(reflector));
-  app.useGlobalGuards(new RolesGuard(reflector));
+  app.useGlobalGuards(new PoliciesGuard(reflector, new CaslAbilityFactory()));
+  // app.useGlobalGuards(new RolesGuard(reflector));
 
   //s: Swagger
   const config = new DocumentBuilder()
