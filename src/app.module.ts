@@ -12,10 +12,16 @@ import { AuthModule } from './auth/auth.module';
       isGlobal: true,
       prismaServiceOptions: {
         middlewares: [loggingMiddleware(new Logger('PrismaMiddleware'))], // configure your prisma middleware
+        prismaOptions:
+          process.env.NODE_ENV !== 'production'
+            ? {
+                log: [{ emit: 'stdout', level: 'query' }],
+              }
+            : undefined,
       },
     }),
-    UserModule,
     AuthModule,
+    UserModule,
   ],
   controllers: [],
   providers: [],
