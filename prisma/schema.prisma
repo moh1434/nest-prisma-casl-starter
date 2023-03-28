@@ -20,4 +20,15 @@ model User {
   type     UserType @default(USER)
   email    String   @unique
   password String
+  Posts    Post[]
+}
+
+model Post {
+  id          String    @id @default(uuid())
+  content     String    @db.VarChar(2048)
+  author      User      @relation(fields: [authorId], references: [id])
+  isPublished Boolean   @default(false)
+  authorId    String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime? @updatedAt
 }

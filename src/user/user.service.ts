@@ -1,16 +1,17 @@
 import { PrismaService } from 'nestjs-prisma';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { RegisterUserDto } from '../auth/dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class UserService {
-  static readonly select: OmitStrict<Prisma.UserSelect, 'password'> = {
+  static readonly select = {
     id: true,
     email: true,
     type: true,
-  };
+  } satisfies OmitStrict<Prisma.UserSelect, 'password'>;
+
   constructor(private prisma: PrismaService) {}
   async create(body: RegisterUserDto) {
     const user = await this.prisma.user.create({

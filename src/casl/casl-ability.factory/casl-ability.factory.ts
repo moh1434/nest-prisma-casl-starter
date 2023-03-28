@@ -1,51 +1,32 @@
-import {
-  Ability,
-  AbilityBuilder,
-  AbilityClass,
-  ExtractSubjectType,
-  InferSubjects,
-} from '@casl/ability';
-import { Injectable } from '@nestjs/common';
+import { Post } from '@prisma/client';
 import { TokenData } from '../../auth/types-auth';
+import { AbilityBuilder, PureAbility } from '@casl/ability';
+import { Subjects } from '@casl/prisma';
+import { PrismaQuery, createPrismaAbility } from '../casl-prisma';
 
-export enum Action {
-  Manage = 'manage',
-  Create = 'create',
-  Read = 'read',
-  Update = 'update',
-  Delete = 'delete',
-}
+export type Action = 'manage' | 'create' | 'read' | 'update' | 'delete';
+export type SubjectsList = {
+  User: TokenData;
+  Post: Post;
+};
 
-class Article {
-  id: string;
-  isPublished: boolean;
-  authorId: string;
-}
+export type AppAbility = PureAbility<
+  [Action, Subjects<SubjectsList> | 'all'],
+  PrismaQuery
+>;
 
-type Subjects = InferSubjects<typeof Article | TokenData> | 'all';
+export function createForUser(user: TokenData) {
+  const { can, cannot, build } = new AbilityBuilder<AppAbility>(
+    createPrismaAbility,
+  );
 
-export type AppAbility = Ability<[Action, Subjects]>;
-
-@Injectable()
-export class CaslAbilityFactory {
-  createForUser(user: TokenData) {
-    const { can, cannot, build } = new AbilityBuilder<
-      Ability<[Action, Subjects]>
-    >(Ability as AbilityClass<AppAbility>);
-
-    if (user.type === 'ADMIN') {
-      can(Action.Manage, 'all'); // read-write access to everything
-    } else {
-      can(Action.Read, 'all'); // read-only access to everything
-    }
-
-    can(Action.Update, Article, { authorId: user.id });
-    cannot(Action.Delete, Article, { isPublished: true });
-
-    return build({
-      // Read https://casl.js.org/v5/en/guide/subject-type-detection#use-classes-as-subject-types for details
-      detectSubjectType: (item) =>
-        item.constructor as ExtractSubjectType<Subjects>,
-    });
+  if (user.type === 'ADMIN') {
+    can('manage', 'all'); // read-write access to everything
+  } else {
+    can('manage', 'User', { id: user.id });
+    can('manage', 'Post', { authorId: user.id });
+    cannot('delete', 'Post', { isPublished: true });
   }
+
+  return build();
 }

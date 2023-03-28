@@ -1,5 +1,5 @@
 import { RolesGuard } from './auth/roles.decorator';
-import { NestFactory, Reflector } from '@nestjs/core';
+import { HttpAdapterHost, NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { PrismaService } from 'nestjs-prisma';
@@ -10,8 +10,7 @@ import * as morgan from 'morgan';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { COOKIE_AUTH_NAME } from './utils/constant';
 import { PrismaErrorInterceptor } from './global/prisma-error.interceptor';
-import { PoliciesGuard } from './casl/PoliciesGuard';
-import { CaslAbilityFactory } from './casl/casl-ability.factory/casl-ability.factory';
+import { AllExceptionsFilter } from './global/all-exceptions.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -51,10 +50,12 @@ async function bootstrap() {
     }),
   );
 
+  const { httpAdapter } = app.get(HttpAdapterHost);
+  app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
   const reflector = app.get(Reflector);
   app.useGlobalGuards(new JwtAuthGuard(reflector));
-  app.useGlobalGuards(new PoliciesGuard(reflector, new CaslAbilityFactory()));
-  // app.useGlobalGuards(new RolesGuard(reflector));
+
+  app.useGlobalGuards(new RolesGuard(reflector));
 
   //s: Swagger
   const config = new DocumentBuilder()
@@ -78,7 +79,7 @@ async function bootstrap() {
 }
 bootstrap();
 
-//already exists or not found Prisma errors.
+//some files in global folder needs to be moved to other folder
 //permissions
 //upload images
 //redis
