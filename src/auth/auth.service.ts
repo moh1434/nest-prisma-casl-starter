@@ -1,4 +1,4 @@
-import { RegisterUserDto } from './dto/create-user.dto';
+import { RegisterUserDto } from './dto/register-user.dto';
 
 import { PasswordHashService } from '../global/password.helper';
 import { Injectable, UnauthorizedException, Body } from '@nestjs/common';
@@ -6,7 +6,7 @@ import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 
 import { TokenData, UserWithoutPassword } from './types-auth';
-import { LoginReqDto } from './dto/login.dto';
+import { LoginUserDto } from './dto/login-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -41,7 +41,7 @@ export class AuthService {
 
     return createdUser;
   }
-  async login(body: LoginReqDto) {
+  async login(body: LoginUserDto) {
     const validateUser = await this.validateUserPassword(
       body.email,
       body.password,

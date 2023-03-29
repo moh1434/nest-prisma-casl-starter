@@ -1,9 +1,9 @@
-import { LoginReqDto } from '../auth/dto/login.dto';
+import { LoginUserDto } from './dto/login-user.dto';
 import { AuthService } from './auth.service';
 import { Controller, Post, Res, Body, Get, Req } from '@nestjs/common';
 import { Public } from './public.decorator';
 import { Response } from 'express';
-import { RegisterUserDto } from './dto/create-user.dto';
+import { RegisterUserDto } from './dto/register-user.dto';
 import { COOKIE_AUTH_NAME, SECURE_COOKIE_OPTION } from '../utils/constant';
 import { OurConfigService } from '../global/config.service';
 
@@ -23,7 +23,7 @@ export class AuthController {
   @Public()
   @Post('/login')
   async login(
-    @Body() body: LoginReqDto,
+    @Body() body: LoginUserDto,
     @Res({ passthrough: true }) res: Response,
   ) {
     const token = await this.authService.login(body);
