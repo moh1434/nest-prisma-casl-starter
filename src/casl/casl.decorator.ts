@@ -16,6 +16,6 @@ export const CaslForbiddenError = createParamDecorator(
 
     request.forbiddenError = ForbiddenError.from(ability);
 
-    return request.forbiddenError as CaslForbiddenErrorI;
+    return request.forbiddenError;
   },
 );
