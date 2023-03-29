@@ -1,14 +1,10 @@
-import { Post } from '@prisma/client';
 import { TokenData } from '../auth/types-auth';
 import { AbilityBuilder, PureAbility } from '@casl/ability';
 import { Subjects } from '@casl/prisma';
 import { PrismaQuery, createPrismaAbility } from './casl-prisma';
+import { SubjectsList } from './generated/subjectsList';
 
 export type Action = 'manage' | 'create' | 'read' | 'update' | 'delete';
-export type SubjectsList = {
-  User: TokenData;
-  Post: Post;
-};
 
 export type AppAbility = PureAbility<
   [Action, Subjects<SubjectsList> | 'all'],
