@@ -7,7 +7,7 @@ import { Request, Response } from 'express';
 export class AllExceptionsFilter extends BaseExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost) {
     if (exception instanceof ForbiddenError) {
-      const ForbiddenExceptionData = new ForbiddenException();
+      const ForbiddenExceptionData = new ForbiddenException(exception.message);
       const ctx = host.switchToHttp();
       const response = ctx.getResponse<Response>();
 
