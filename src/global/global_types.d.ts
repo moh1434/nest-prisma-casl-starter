@@ -1,3 +1,6 @@
+import { TokenData } from 'src/auth/types-auth';
+import { Request } from 'express';
+import { CaslForbiddenErrorI } from '../casl/casl.decorator';
 export {};
 
 declare global {
@@ -5,4 +8,10 @@ declare global {
     ObjectType,
     Exclude<keyof ObjectType, KeysType>
   >;
+  //
+
+  type RequestExtended = Request & {
+    user: TokenData;
+    forbiddenError: CaslForbiddenErrorI;
+  };
 }

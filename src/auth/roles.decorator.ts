@@ -2,7 +2,6 @@ import { SetMetadata } from '@nestjs/common';
 import { UserType } from '@prisma/client';
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { TokenData } from './types-auth';
 
 export const ROLES_KEY = 'roles';
 export const Roles = (...roles: UserType[]) => SetMetadata(ROLES_KEY, roles);
@@ -19,9 +18,7 @@ export class RolesGuard implements CanActivate {
     if (!requiredRoles) {
       return true;
     }
-    const { user } = context.switchToHttp().getRequest() as {
-      user: TokenData;
-    };
+    const { user } = context.switchToHttp().getRequest<RequestExtended>();
 
     return requiredRoles.some((role) => user.type.includes(role));
   }

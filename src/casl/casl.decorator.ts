@@ -7,15 +7,13 @@ import {
 
 import { ForbiddenError } from '@casl/ability';
 
-import { TokenData } from '../auth/types-auth';
-
 export type CaslForbiddenErrorI = ForbiddenError<AppAbility>;
 
 export const CaslForbiddenError = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
-    const request = ctx.switchToHttp().getRequest();
+    const request = ctx.switchToHttp().getRequest<RequestExtended>();
 
-    const ability = createForUser(request.user as TokenData);
+    const ability = createForUser(request.user);
 
     ForbiddenError.from(ability);
 

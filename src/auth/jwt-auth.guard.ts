@@ -15,11 +15,11 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   ): boolean | Promise<boolean> | Observable<boolean> {
     // console.log(
     //   'normal=',
-    //   JSON.stringify(context.switchToHttp().getRequest().cookies),
+    //   JSON.stringify(context.switchToHttp().getRequest<RequestExtended>().cookies),
     // );
     // console.log(
     //   'signed=',
-    //   JSON.stringify(context.switchToHttp().getRequest().signedCookies),
+    //   JSON.stringify(context.switchToHttp().getRequest<RequestExtended>().signedCookies),
     // );
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
       context.getHandler(),
