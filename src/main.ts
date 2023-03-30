@@ -78,10 +78,3 @@ async function bootstrap() {
   await app.listen(configService.port);
 }
 bootstrap();
-
-//some files in global folder needs to be moved to other folder
-//permissions
-//upload images
-//redis
-//cacheWrapper
-//pm2 with logger
