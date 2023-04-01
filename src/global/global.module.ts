@@ -8,6 +8,7 @@ import configuration, { OurConfigService } from './config.service';
     ConfigModule.forRoot({
       envFilePath: [`${process.env.NODE_ENV}.env`, '.env'],
       load: [configuration],
+      cache: true,
     }),
   ],
   providers: [OurConfigService],
