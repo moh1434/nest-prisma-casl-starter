@@ -1,8 +1,11 @@
 import { PrismaService } from 'nestjs-prisma';
 import { Injectable } from '@nestjs/common';
 import { RegisterUserDto } from '../auth/dto/register-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { UpdateUserDto, UpdateUserWithAvatarDto } from './dto/update-user.dto';
 import { Prisma } from '@prisma/client';
+
+import { FilePrefix } from '../utils/constant';
+import { S3Service } from '../s3/s3.service';
 
 @Injectable()
 export class UserService {
@@ -10,9 +13,10 @@ export class UserService {
     id: true,
     email: true,
     type: true,
+    avatar: true,
   } satisfies OmitStrict<Prisma.UserSelect, 'password'>;
 
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService, private s3Service: S3Service) {}
   async create(body: RegisterUserDto) {
     const user = await this.prisma.user.create({
       data: body,
@@ -47,10 +51,28 @@ export class UserService {
     return user;
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto) {
+  async update(
+    id: string,
+    updateUserDto: UpdateUserDto,
+    upload?: {
+      newFile: Express.Multer.File;
+      oldToDelete: string | null;
+    },
+  ) {
+    const UpdateUserWithAvatar: UpdateUserWithAvatarDto = { ...updateUserDto };
+    if (upload?.newFile) {
+      const { prefixedLink } = await this.s3Service.putObject(
+        upload.newFile,
+        FilePrefix.user,
+      );
+      UpdateUserWithAvatar.avatar = prefixedLink;
+      if (upload.oldToDelete) {
+        await this.s3Service.deleteObject(FilePrefix.user + upload.oldToDelete);
+      }
+    }
     const newUser = await this.prisma.user.update({
       where: { id: id },
-      data: updateUserDto,
+      data: UpdateUserWithAvatar,
       select: UserService.select,
     });
     return newUser;

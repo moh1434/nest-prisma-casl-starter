@@ -20,6 +20,7 @@ model User {
   type     UserType @default(USER)
   email    String   @unique
   password String
+  avatar   String?
   Posts    Post[]
 }
 

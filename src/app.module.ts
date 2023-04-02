@@ -4,6 +4,7 @@ import { PrismaModule } from 'nestjs-prisma';
 import { loggingMiddleware } from './global/logging.middleware';
 import { GlobalModule } from './global/global.module';
 import { AuthModule } from './auth/auth.module';
+import { S3Module } from './s3/s3.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { AuthModule } from './auth/auth.module';
     }),
     AuthModule,
     UserModule,
+    S3Module,
   ],
   controllers: [],
   providers: [],
