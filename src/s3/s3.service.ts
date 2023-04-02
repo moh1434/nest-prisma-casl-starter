@@ -26,7 +26,7 @@ export class S3Service {
 
   public putObject = async (
     file: Express.Multer.File,
-    prefix: FilePrefix,
+    prefix: FilePrefix = FilePrefix.empty,
     link = uuidv4(),
   ) => {
     const prefixedLink = prefix + link;
@@ -45,7 +45,7 @@ export class S3Service {
 
   public putBuffer = async (
     BufferFile: Buffer,
-    prefix: FilePrefix,
+    prefix: FilePrefix = FilePrefix.empty,
     link = uuidv4(),
     mimeType = 'image/webp',
   ) => {
