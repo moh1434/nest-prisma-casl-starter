@@ -15,15 +15,18 @@ export class AuthService {
     private jwtService: JwtService,
     private hash: PasswordHashService,
   ) {}
-  private async validateUserPassword(email: string, password: string) {
+  private async validateUserPassword(email: string, inputPassword: string) {
     const user = await this.userService.findByEmail(email);
     if (!user) throw new UnauthorizedException();
 
-    const isRightPassword = await this.hash.compare(password, user.password);
+    const isRightPassword = await this.hash.compare(
+      inputPassword,
+      user.password,
+    );
     if (!isRightPassword) throw new UnauthorizedException();
 
-    delete user.password;
-    return user as UserWithoutPassword;
+    const { password, ...userWithoutPassword } = user;
+    return userWithoutPassword as UserWithoutPassword;
   }
 
   private async generateToken(tokenData: TokenData) {
