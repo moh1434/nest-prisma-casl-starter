@@ -1,3 +1,4 @@
+import { TokenData } from 'src/auth/types-auth';
 import {
   Controller,
   Get,
@@ -22,6 +23,7 @@ import {
 import { Mb } from '../utils/constant';
 import { ApiConsumes } from '@nestjs/swagger';
 import { multerOptions } from '../s3/multer.config';
+import { JwtUser } from '../auth/user.decorator';
 
 @Controller('user')
 export class UserController {
@@ -33,6 +35,17 @@ export class UserController {
     return this.userService.findAll();
   }
 
+  @Get('me')
+  async findMyProfile(
+    @CaslForbiddenError() forbiddenError: CaslForbiddenErrorI,
+    @JwtUser() authUser: TokenData,
+  ) {
+    const user = await this.userService.findOne(authUser.id);
+
+    forbiddenError.throwUnlessCan('read', subject('User', user));
+
+    return user;
+  }
   @Get(':id')
   async findOne(
     @Param('id') id: string,
