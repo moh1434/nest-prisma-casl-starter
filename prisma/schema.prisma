@@ -5,6 +5,16 @@ generator client {
   provider = "prisma-client-js"
 }
 
+//https://github.com/kimjbstar/prisma-class-generator/tree/main/prisma
+generator prismaClassGenerator {
+  provider = "prisma-class-generator"
+
+  output = "../src/_gen/prisma-class"
+  dryRun = "false"
+  // separateRelationFields = "false"
+  // useUndefinedDefault    = "true"
+}
+
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
@@ -15,11 +25,18 @@ enum UserType {
   USER
 }
 
-model User {
-  id       String   @id @default(uuid())
+//refactor the services to work with this
+model AuthUser {
+  id       String   @id
   type     UserType @default(USER)
   email    String   @unique
   password String
+  user     User     @relation(fields: [id], references: [id])
+}
+
+model User {
+  id       String    @id @default(uuid())
+  AuthUser AuthUser?
   avatar   String?
   Posts    Post[]
 }

@@ -13,7 +13,7 @@
     "start:dev": "NODE_ENV=development nest start --watch",
     "start:debug": "NODE_ENV=development nest start --debug --watch",
     "start:prod": "NODE_ENV=production node dist/main",
-    "prisma:generate": "prisma generate && npm run generate_casl",
+    "prisma:generate": "npx prisma generate",
     "prisma:deploy": "prisma db push",
     "prisma:update": "prisma generate && prisma db push && npm run generate_casl",
     "prisma:reset": "prisma db push --force-reset --preview-feature && prisma generate && prisma db seed && npm run generate_casl",
@@ -46,6 +46,7 @@
     "nestjs-prisma": "^0.20.0",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
+    "prisma-class-generator": "^0.2.6",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
     "uuid": "^9.0.0"

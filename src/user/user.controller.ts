@@ -24,6 +24,7 @@ import { Mb } from '../utils/constant';
 import { ApiConsumes } from '@nestjs/swagger';
 import { multerOptions } from '../s3/multer.config';
 import { JwtUser } from '../auth/user.decorator';
+import { User } from '../_gen/prisma-class/user';
 
 @Controller('user')
 export class UserController {
@@ -39,12 +40,12 @@ export class UserController {
   async findMyProfile(
     @CaslForbiddenError() forbiddenError: CaslForbiddenErrorI,
     @JwtUser() authUser: TokenData,
-  ) {
+  ): Promise<User> {
     const user = await this.userService.findOne(authUser.id);
 
     forbiddenError.throwUnlessCan('read', subject('User', user));
 
-    return user;
+    return user as any;
   }
   @Get(':id')
   async findOne(

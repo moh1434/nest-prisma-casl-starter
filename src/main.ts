@@ -1,3 +1,4 @@
+import { PrismaModel } from './_gen/prisma-class';
 import { RolesGuard } from './auth/roles.decorator';
 import { HttpAdapterHost, NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
@@ -71,7 +72,11 @@ async function bootstrap() {
     .setVersion('1.0')
     .addTag('myTag')
     .build();
-  const document = SwaggerModule.createDocument(app, config);
+  // const document = SwaggerModule.createDocument(app, config);
+  const document = SwaggerModule.createDocument(app, config, {
+    extraModels: PrismaModel.extraModels,
+  });
+
   SwaggerModule.setup('api', app, document);
   //e: Swagger
 
