@@ -1,17 +1,17 @@
-import { PrismaModel } from './_gen/prisma-class';
-import { RolesGuard } from './auth/roles.decorator';
+import { PrismaModel } from './-tools/swagger/generator-prisma-class';
+import { RolesGuard } from './auth/auth-utils/roles.decorator';
 import { HttpAdapterHost, NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { PrismaService } from 'nestjs-prisma';
-import { OurConfigService } from './global/config.service';
+import { OurConfigService } from './-global/config.service';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
 import * as morgan from 'morgan';
-import { JwtAuthGuard } from './auth/jwt-auth.guard';
-import { COOKIE_AUTH_NAME } from './utils/constant';
-import { PrismaErrorInterceptor } from './global/prisma-error.interceptor';
-import { AllExceptionsFilter } from './global/all-exceptions.filter';
+import { JwtAuthGuard } from './auth/auth-utils/jwt-auth.guard';
+import { COOKIE_AUTH_NAME } from './-utils/constant';
+import { PrismaErrorInterceptor } from './-global/prisma-error.interceptor';
+import { AllExceptionsFilter } from './-global/all-exceptions.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

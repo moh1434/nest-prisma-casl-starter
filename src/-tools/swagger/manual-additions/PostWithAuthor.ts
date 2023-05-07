@@ -1,5 +1,5 @@
 import { IntersectionType } from '@nestjs/swagger';
-import { Post } from '../_gen/prisma-class/post';
-import { PostRelations } from '../_gen/prisma-class/post_relations';
+import { Post } from '../generator-prisma-class/post';
+import { PostRelations } from '../generator-prisma-class/post_relations';
 
 export class PostWithAuthor extends IntersectionType(Post, PostRelations) {}

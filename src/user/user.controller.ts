@@ -1,5 +1,5 @@
 import { AuthService } from './../auth/auth.service';
-import { TokenData } from 'src/auth/types-auth';
+import { TokenData } from 'src/auth/auth-utils/types-auth';
 import {
   Controller,
   Get,
@@ -14,18 +14,18 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UserService } from './user.service';
 
-import { Roles } from 'src/auth/roles.decorator';
+import { Roles } from 'src/auth/auth-utils/roles.decorator';
 import { UserType } from '@prisma/client';
 import { subject } from '@casl/ability';
 import {
   CaslForbiddenError,
   CaslForbiddenErrorI,
-} from '../casl/casl.decorator';
-import { Mb } from '../utils/constant';
+} from '../-tools/casl/casl-forbidden-error.decorator';
+import { Mb } from '../-utils/constant';
 import { ApiConsumes } from '@nestjs/swagger';
-import { multerOptions } from '../s3/multer.config';
-import { JwtUser } from '../auth/user.decorator';
-import { User } from '../_gen/prisma-class/user';
+import { multerOptions } from '../-tools/s3/multer.config';
+import { JwtUser } from '../auth/auth-utils/user.decorator';
+import { User } from '../-tools/swagger/generator-prisma-class/user';
 import { UpdateUserWithAvatarDto } from '../auth/dto/update-user.dto';
 
 @Controller('user')

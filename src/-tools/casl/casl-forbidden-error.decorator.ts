@@ -1,6 +1,6 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 
-import { AppAbility, createForUser } from './casl-ability.factory';
+import { AppAbility, createForUser } from './casl-rules.factory';
 
 import { ForbiddenError } from '@casl/ability';
 

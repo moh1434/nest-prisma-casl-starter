@@ -1,9 +1,9 @@
-import { AuthService } from './../auth/auth.service';
+import { AuthService } from '../auth.service';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
-import { OurConfigService } from '../global/config.service';
-import { COOKIE_AUTH_NAME } from '../utils/constant';
+import { OurConfigService } from '../../-global/config.service';
+import { COOKIE_AUTH_NAME } from '../../-utils/constant';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {

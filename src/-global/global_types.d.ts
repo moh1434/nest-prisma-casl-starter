@@ -1,6 +1,6 @@
-import { TokenData } from 'src/auth/types-auth';
+import { TokenData } from 'src/auth/auth-utils/types-auth';
 import { Request } from 'express';
-import { CaslForbiddenErrorI } from '../casl/casl.decorator';
+import { CaslForbiddenErrorI } from '../-tools/casl/casl-forbidden-error.decorator';
 export {};
 
 declare global {

@@ -9,7 +9,7 @@ generator client {
 generator prismaClassGenerator {
   provider = "prisma-class-generator"
 
-  output                 = "../src/_gen/prisma-class"
+  output                 = "../src/-tools/swagger/generator-prisma-class"
   dryRun                 = "false"
   separateRelationFields = "true"
   useUndefinedDefault    = "false"

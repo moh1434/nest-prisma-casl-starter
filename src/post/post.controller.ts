@@ -7,17 +7,17 @@ import {
   Post as PostMethod,
 } from '@nestjs/common';
 import { PostService } from './post.service';
-import { Post } from '../_gen/prisma-class/post';
-import { TokenData } from '../auth/types-auth';
-import { JwtUser } from '../auth/user.decorator';
+import { Post } from '../-tools/swagger/generator-prisma-class/post';
+import { TokenData } from '../auth/auth-utils/types-auth';
+import { JwtUser } from '../auth/auth-utils/user.decorator';
 import {
   CaslForbiddenError,
   CaslForbiddenErrorI,
-} from '../casl/casl.decorator';
+} from '../-tools/casl/casl-forbidden-error.decorator';
 import { subject } from '@casl/ability';
 
-import { PostWithAuthor } from '../_swagger/post_author';
-import { Roles } from '../auth/roles.decorator';
+import { PostWithAuthor } from '../-tools/swagger/manual-additions/PostWithAuthor';
+import { Roles } from '../auth/auth-utils/roles.decorator';
 import { UserType } from '@prisma/client';
 
 @Controller('post')

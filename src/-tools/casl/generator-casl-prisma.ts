@@ -6,8 +6,11 @@ import {
 const overrides: OverrideSubjects = {
   AuthUser: {
     typeName: 'TokenData',
-    importPath: "import { TokenData } from 'src/auth/types-auth';",
+    importPath: "import { TokenData } from 'src/auth/auth-utils/types-auth';",
   },
   User: null,
 };
-generateCaslSubjectsToFile('src/casl/generated/subjectsList.ts', overrides);
+generateCaslSubjectsToFile(
+  'src/-tools/casl/generated/subjectsList.ts',
+  overrides,
+);

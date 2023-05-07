@@ -1,7 +1,7 @@
 import { PrismaService } from 'nestjs-prisma';
 import { RegisterAuthUserDto } from './dto/register-user.dto';
 
-import { PasswordHashService } from '../global/password.helper';
+import { PasswordHashService } from './auth-utils/password.helper';
 import {
   Injectable,
   UnauthorizedException,
@@ -10,11 +10,11 @@ import {
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 
-import { AuthUserWithoutPassword, TokenData } from './types-auth';
+import { AuthUserWithoutPassword, TokenData } from './auth-utils/types-auth';
 import { LoginAuthUserDto } from './dto/login-auth-user.dto';
 import { Prisma, UserType } from '@prisma/client';
-import { S3Service } from '../s3/s3.service';
-import { FilePrefix } from '../utils/constant';
+import { S3Service } from '../-tools/s3/s3.service';
+import { FilePrefix } from '../-utils/constant';
 
 @Injectable()
 export class AuthService {

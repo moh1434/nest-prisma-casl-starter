@@ -6,9 +6,9 @@ import {
   GetObjectTaggingCommand,
 } from '@aws-sdk/client-s3';
 import { Response } from 'express';
-import { OurConfigService } from '../global/config.service';
+import { OurConfigService } from '../../-global/config.service';
 import { v4 as uuidv4 } from 'uuid';
-import { FilePrefix } from '../utils/constant';
+import { FilePrefix } from '../../-utils/constant';
 export type ReplaceFile = {
   newFile: Express.Multer.File;
   oldToDelete: string | null;

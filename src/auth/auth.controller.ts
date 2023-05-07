@@ -1,7 +1,7 @@
 import { RegisterAuthUserDto } from './dto/register-user.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiConsumes } from '@nestjs/swagger';
-import { multerOptions } from '../s3/multer.config';
+import { multerOptions } from '../-tools/s3/multer.config';
 import { AuthService } from './auth.service';
 import {
   Controller,
@@ -12,15 +12,15 @@ import {
   UseInterceptors,
   UploadedFile,
 } from '@nestjs/common';
-import { Public } from './public.decorator';
+import { Public } from './auth-utils/public.decorator';
 import { Response } from 'express';
 
-import { COOKIE_AUTH_NAME, Mb, SECURE_COOKIE_OPTION } from '../utils/constant';
-import { OurConfigService } from '../global/config.service';
+import { COOKIE_AUTH_NAME, Mb, SECURE_COOKIE_OPTION } from '../-utils/constant';
+import { OurConfigService } from '../-global/config.service';
 
 import { LoginAuthUserDto } from './dto/login-auth-user.dto';
 
-import { User } from '../_gen/prisma-class/user';
+import { User } from '../-tools/swagger/generator-prisma-class/user';
 
 @Controller('auth')
 export class AuthController {

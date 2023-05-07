@@ -1,4 +1,4 @@
-import { TokenData } from '../auth/types-auth';
+import { TokenData } from '../../auth/auth-utils/types-auth';
 import { AbilityBuilder, PureAbility } from '@casl/ability';
 import { Subjects } from '@casl/prisma';
 import { PrismaQuery, createPrismaAbility } from './casl-prisma';
