@@ -16,18 +16,15 @@ import { Public } from './auth-utils/public.decorator';
 import { Response } from 'express';
 
 import { COOKIE_AUTH_NAME, Mb, SECURE_COOKIE_OPTION } from '../-utils/constant';
-import { OurConfigService } from '../-global/config.service';
 
 import { LoginAuthUserDto } from './dto/login-auth-user.dto';
 
 import { User } from '../-tools/swagger/generator-prisma-class/user';
+import { Env } from '../-global/env';
 
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private readonly authService: AuthService,
-    private configService: OurConfigService,
-  ) {}
+  constructor(private readonly authService: AuthService) {}
 
   @Public()
   @Post('/register')
@@ -51,7 +48,7 @@ export class AuthController {
 
     res.cookie(COOKIE_AUTH_NAME, token.access_token, {
       ...SECURE_COOKIE_OPTION,
-      maxAge: this.configService.getConfig().cookieExpire,
+      maxAge: Env.cookieExpire,
     });
 
     return token;

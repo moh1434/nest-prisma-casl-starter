@@ -4,7 +4,7 @@ import { HttpAdapterHost, NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { PrismaService } from 'nestjs-prisma';
-import { OurConfigService } from './-global/config.service';
+
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
 import * as morgan from 'morgan';
@@ -12,19 +12,21 @@ import { JwtAuthGuard } from './auth/auth-utils/jwt-auth.guard';
 import { COOKIE_AUTH_NAME } from './-utils/constant';
 import { PrismaErrorInterceptor } from './-global/prisma-error.interceptor';
 import { AllExceptionsFilter } from './-global/all-exceptions.filter';
+import { Env, validateEnv } from './-global/env';
 
 async function bootstrap() {
+  await validateEnv();
+
   const app = await NestFactory.create(AppModule);
-  const configService = app.get(OurConfigService).getConfig();
 
   // log
-  if (configService.isDebug) {
+  if (Env.isDebug) {
     app.use(morgan('dev'));
   }
 
   // cors
   app.enableCors({
-    origin: configService.frontendUrl,
+    origin: Env.frontendUrl,
     credentials: true,
   });
   // enable version
@@ -41,7 +43,7 @@ async function bootstrap() {
   app.useGlobalInterceptors(new PrismaErrorInterceptor());
 
   // cookie
-  app.use(cookieParser(configService.cookieKey));
+  app.use(cookieParser(Env.cookieKey));
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -80,6 +82,7 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
   //e: Swagger
 
-  await app.listen(configService.port);
+  await app.listen(Env.port);
 }
+
 bootstrap();

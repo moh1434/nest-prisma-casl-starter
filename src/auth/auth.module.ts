@@ -4,11 +4,12 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { OurConfigService } from 'src/-global/config.service';
+
 import { JwtStrategy } from './auth-utils/jwt.strategy';
 import { UserModule } from 'src/user/user.module';
 
 import { S3Module } from '../-tools/s3/s3.module';
+import { Env } from '../-global/env';
 
 @Global()
 @Module({
@@ -16,11 +17,11 @@ import { S3Module } from '../-tools/s3/s3.module';
     UserModule,
     PassportModule,
     JwtModule.registerAsync({
-      useFactory: async (configService: OurConfigService) => ({
-        secret: configService.getConfig().jwtSecret,
-        signOptions: { expiresIn: configService.getConfig().jwtExpire },
+      useFactory: async () => ({
+        secret: Env.jwtSecret,
+        signOptions: { expiresIn: Env.jwtExpire },
       }),
-      inject: [OurConfigService],
+      inject: [],
     }),
     S3Module,
   ],

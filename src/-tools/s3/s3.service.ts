@@ -6,9 +6,10 @@ import {
   GetObjectTaggingCommand,
 } from '@aws-sdk/client-s3';
 import { Response } from 'express';
-import { OurConfigService } from '../../-global/config.service';
+
 import { v4 as uuidv4 } from 'uuid';
 import { FilePrefix } from '../../-utils/constant';
+import { Env } from '../../-global/env';
 export type ReplaceFile = {
   newFile: Express.Multer.File;
   oldToDelete: string | null;
@@ -17,13 +18,13 @@ export type ReplaceFile = {
 export class S3Service {
   s3Client: S3;
 
-  constructor(private configService: OurConfigService) {
+  constructor() {
     this.s3Client = new S3({
       credentials: {
-        accessKeyId: this.configService.getConfig().S3_ACCESS_KEY,
-        secretAccessKey: this.configService.getConfig().S3_SECRET_KEY,
+        accessKeyId: Env.S3_ACCESS_KEY,
+        secretAccessKey: Env.S3_SECRET_KEY,
       },
-      region: this.configService.getConfig().S3_REGION,
+      region: Env.S3_REGION,
     });
   }
 
@@ -35,7 +36,7 @@ export class S3Service {
     const prefixedLink = prefix + link;
     try {
       const s3Response = await this.s3Client.putObject({
-        Bucket: this.configService.getConfig().S3_BUCKET,
+        Bucket: Env.S3_BUCKET,
         Key: prefixedLink,
         Body: file.buffer,
         ContentType: file.mimetype,
@@ -55,7 +56,7 @@ export class S3Service {
     try {
       const prefixedLink = prefix + link;
       const s3Response = await this.s3Client.putObject({
-        Bucket: this.configService.getConfig().S3_BUCKET,
+        Bucket: Env.S3_BUCKET,
         Key: prefixedLink,
         Body: BufferFile,
         ContentType: mimeType,
@@ -69,7 +70,7 @@ export class S3Service {
   public deleteObject = async (prefixedLink: string) => {
     try {
       return await this.s3Client.deleteObject({
-        Bucket: this.configService.getConfig().S3_BUCKET,
+        Bucket: Env.S3_BUCKET,
         Key: prefixedLink,
       });
     } catch (error) {
@@ -92,7 +93,7 @@ export class S3Service {
   public getObject = async (prefixedLink: string) => {
     try {
       return await this.s3Client.getObject({
-        Bucket: this.configService.getConfig().S3_BUCKET,
+        Bucket: Env.S3_BUCKET,
         Key: prefixedLink,
       });
     } catch (error) {
@@ -108,7 +109,7 @@ export class S3Service {
   ) => {
     try {
       const params = {
-        Bucket: this.configService.getConfig().S3_BUCKET,
+        Bucket: Env.S3_BUCKET,
         Key: prefixedLink,
       };
 
