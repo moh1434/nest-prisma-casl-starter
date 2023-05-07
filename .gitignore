@@ -37,4 +37,4 @@ lerna-debug.log*
 .env
 DEV/*[!(public)]
 
-# _gen
+_gen/**

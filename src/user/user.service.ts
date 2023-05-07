@@ -1,7 +1,7 @@
 import { PrismaService } from 'nestjs-prisma';
 import { Injectable } from '@nestjs/common';
-import { RegisterUserDto } from '../auth/dto/register-user.dto';
-import { UpdateUserDto, UpdateUserWithAvatarDto } from './dto/update-user.dto';
+
+import { UpdateUserWithAvatarDto } from '../auth/dto/update-user.dto';
 import { Prisma } from '@prisma/client';
 
 import { FilePrefix } from '../utils/constant';
@@ -9,22 +9,11 @@ import { S3Service } from '../s3/s3.service';
 
 @Injectable()
 export class UserService {
+  constructor(private prisma: PrismaService, private s3Service: S3Service) {}
   static readonly select = {
     id: true,
-    email: true,
-    type: true,
     avatar: true,
-  } satisfies OmitStrict<Prisma.UserSelect, 'password'>;
-
-  constructor(private prisma: PrismaService, private s3Service: S3Service) {}
-  async create(body: RegisterUserDto) {
-    const user = await this.prisma.user.create({
-      data: body,
-      select: UserService.select,
-    });
-
-    return user;
-  }
+  } satisfies Prisma.UserSelect;
 
   async findAll() {
     const users = await this.prisma.user.findMany({
@@ -33,65 +22,49 @@ export class UserService {
     return users;
   }
 
-  async findOne(id: string) {
+  async findById(id: string) {
     const user = await this.prisma.user.findUniqueOrThrow({
       where: { id },
       select: UserService.select,
     });
-    return user;
-  }
-  async findByEmail(email: string) {
-    const user = await this.prisma.user.findUnique({
-      where: { email },
-      select: {
-        ...UserService.select,
-        password: true, //i need the password for auth login
-      },
-    });
+
     return user;
   }
 
   async update(
     id: string,
-    updateUserDto: UpdateUserDto,
-    upload?: {
-      newFile: Express.Multer.File;
-      oldToDelete: string | null;
-    },
+    updateUserDto: UpdateUserWithAvatarDto,
+    oldToDelete: string | null,
   ) {
-    const UpdateUserWithAvatar: UpdateUserWithAvatarDto = { ...updateUserDto };
-    if (upload?.newFile) {
-      const { prefixedLink } = await this.s3Service.putObject(
-        upload.newFile,
+    let prefixedLink: string | undefined;
+    if (updateUserDto.file) {
+      prefixedLink = await this.s3Service.replaceObject(
+        {
+          newFile: updateUserDto.file,
+          oldToDelete,
+        },
         FilePrefix.user,
       );
-      UpdateUserWithAvatar.avatar = prefixedLink;
-      if (upload.oldToDelete) {
-        await this.s3Service.deleteObject(FilePrefix.user + upload.oldToDelete);
-      }
     }
+
+    delete updateUserDto['file'];
+
     const newUser = await this.prisma.user.update({
-      where: { id: id },
-      data: UpdateUserWithAvatar,
+      where: { id },
+      data: { ...updateUserDto, avatar: prefixedLink },
       select: UserService.select,
     });
     return newUser;
   }
-  async updatePassword(id: string, hashedPassword: string) {
-    await this.prisma.user.update({
-      where: { id },
-      data: { password: hashedPassword },
-      select: UserService.select,
-    });
-  }
 
   async remove(id: string) {
-    const user = await this.prisma.user.delete({
-      where: {
-        id: id,
-      },
-      select: { id: true },
+    this.prisma.$transaction(async (tx) => {
+      await tx.authUser.delete({
+        where: { id },
+      });
+      await tx.user.delete({
+        where: { id },
+      });
     });
-    return user;
   }
 }

@@ -5,6 +5,7 @@ import { loggingMiddleware } from './global/logging.middleware';
 import { GlobalModule } from './global/global.module';
 import { AuthModule } from './auth/auth.module';
 import { S3Module } from './s3/s3.module';
+import { PostModule } from './post/post.module';
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { S3Module } from './s3/s3.module';
         prismaOptions:
           process.env.NODE_ENV !== 'production'
             ? {
-                log: [{ emit: 'stdout', level: 'query' }],
+                // log: [{ emit: 'stdout', level: 'query' }],
               }
             : undefined,
       },
@@ -24,6 +25,7 @@ import { S3Module } from './s3/s3.module';
     AuthModule,
     UserModule,
     S3Module,
+    PostModule,
   ],
   controllers: [],
   providers: [],

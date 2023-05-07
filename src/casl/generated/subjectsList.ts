@@ -4,6 +4,6 @@ import { Post } from '@prisma/client';
 import { TokenData } from 'src/auth/types-auth';
 
 export type SubjectsList = {
-  User: TokenData;
+  AuthUser: TokenData;
   Post: Post;
 };

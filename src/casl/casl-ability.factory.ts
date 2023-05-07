@@ -19,7 +19,7 @@ export function createForUser(user: TokenData) {
   if (user.type === 'ADMIN') {
     can('manage', 'all'); // read-write access to everything
   } else {
-    can('manage', 'User', { id: user.id });
+    can('manage', 'AuthUser', { id: user.id });
     can('manage', 'Post', { authorId: user.id });
     cannot('delete', 'Post', { isPublished: true });
   }

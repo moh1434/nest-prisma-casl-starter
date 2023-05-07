@@ -9,10 +9,10 @@ generator client {
 generator prismaClassGenerator {
   provider = "prisma-class-generator"
 
-  output = "../src/_gen/prisma-class"
-  dryRun = "false"
-  // separateRelationFields = "false"
-  // useUndefinedDefault    = "true"
+  output                 = "../src/_gen/prisma-class"
+  dryRun                 = "false"
+  separateRelationFields = "true"
+  useUndefinedDefault    = "false"
 }
 
 datasource db {

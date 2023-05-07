@@ -1,4 +1,3 @@
-import { User } from './user';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class Post {
@@ -7,9 +6,6 @@ export class Post {
 
   @ApiProperty({ type: String })
   content: string;
-
-  @ApiProperty({ type: () => User })
-  author: User;
 
   @ApiProperty({ type: Boolean })
   isPublished: boolean;

@@ -1,11 +1,26 @@
-import { LoginUserDto } from './dto/login-user.dto';
+import { RegisterAuthUserDto } from './dto/register-user.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiConsumes } from '@nestjs/swagger';
+import { multerOptions } from '../s3/multer.config';
 import { AuthService } from './auth.service';
-import { Controller, Post, Res, Body, Get, Req } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Res,
+  Body,
+  Get,
+  UseInterceptors,
+  UploadedFile,
+} from '@nestjs/common';
 import { Public } from './public.decorator';
 import { Response } from 'express';
-import { RegisterUserDto } from './dto/register-user.dto';
-import { COOKIE_AUTH_NAME, SECURE_COOKIE_OPTION } from '../utils/constant';
+
+import { COOKIE_AUTH_NAME, Mb, SECURE_COOKIE_OPTION } from '../utils/constant';
 import { OurConfigService } from '../global/config.service';
+
+import { LoginAuthUserDto } from './dto/login-auth-user.dto';
+
+import { User } from '../_gen/prisma-class/user';
 
 @Controller('auth')
 export class AuthController {
@@ -16,14 +31,20 @@ export class AuthController {
 
   @Public()
   @Post('/register')
-  async register(@Body() body: RegisterUserDto) {
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('file', multerOptions(4 * Mb)))
+  async register(
+    @Body() body: RegisterAuthUserDto,
+    @UploadedFile() file: Express.Multer.File,
+  ): Promise<User> {
+    body.file = file;
     return await this.authService.createAccount(body);
   }
 
   @Public()
   @Post('/login')
   async login(
-    @Body() body: LoginUserDto,
+    @Body() body: LoginAuthUserDto,
     @Res({ passthrough: true }) res: Response,
   ) {
     const token = await this.authService.login(body);
@@ -37,7 +58,7 @@ export class AuthController {
   }
 
   @Get('logout')
-  async logout(@Res({ passthrough: true }) res: Response) {
+  async logout(@Res({ passthrough: true }) res: Response): Promise<void> {
     res.cookie(COOKIE_AUTH_NAME, '', {
       ...SECURE_COOKIE_OPTION,
     });

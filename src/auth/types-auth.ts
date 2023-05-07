@@ -1,8 +1,5 @@
-import { User, UserType } from '@prisma/client';
+import { AuthUser } from '@prisma/client';
 
-export type TokenData = {
-  id: string;
-  type: UserType;
-};
+export type TokenData = OmitStrict<AuthUser, 'password' | 'email'>;
 
-export type UserWithoutPassword = OmitStrict<User, 'password'>;
+export type AuthUserWithoutPassword = OmitStrict<AuthUser, 'password'>;

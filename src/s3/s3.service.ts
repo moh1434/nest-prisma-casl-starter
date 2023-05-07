@@ -9,7 +9,10 @@ import { Response } from 'express';
 import { OurConfigService } from '../global/config.service';
 import { v4 as uuidv4 } from 'uuid';
 import { FilePrefix } from '../utils/constant';
-
+export type ReplaceFile = {
+  newFile: Express.Multer.File;
+  oldToDelete: string | null;
+};
 @Injectable()
 export class S3Service {
   s3Client: S3;
@@ -72,6 +75,18 @@ export class S3Service {
     } catch (error) {
       throw error;
     }
+  };
+  public replaceObject = async (
+    upload: ReplaceFile,
+    prefix: FilePrefix = FilePrefix.empty,
+  ) => {
+    const { prefixedLink } = await this.putObject(upload.newFile, prefix);
+
+    if (upload.oldToDelete) {
+      await this.deleteObject(prefix + upload.oldToDelete);
+    }
+
+    return prefixedLink;
   };
 
   public getObject = async (prefixedLink: string) => {
