@@ -12,21 +12,21 @@ import { JwtAuthGuard } from './auth/auth-utils/jwt-auth.guard';
 import { COOKIE_AUTH_NAME } from './-utils/constant';
 import { PrismaErrorInterceptor } from './-global/prisma-error.interceptor';
 import { AllExceptionsFilter } from './-global/all-exceptions.filter';
-import { Env, validateEnv } from './-global/env';
+import { Env } from './-global/env';
 
 async function bootstrap() {
-  await validateEnv();
-
+  require('dotenv').config();
+  console.log(process.env);
   const app = await NestFactory.create(AppModule);
-
+  const env = app.get<Env>(Env);
   // log
-  if (Env.isDebug) {
+  if (env.isDebug) {
     app.use(morgan('dev'));
   }
 
   // cors
   app.enableCors({
-    origin: Env.frontendUrl,
+    origin: env.frontendUrl,
     credentials: true,
   });
   // enable version
@@ -43,7 +43,7 @@ async function bootstrap() {
   app.useGlobalInterceptors(new PrismaErrorInterceptor());
 
   // cookie
-  app.use(cookieParser(Env.cookieKey));
+  app.use(cookieParser(env.cookieKey));
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -82,7 +82,7 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
   //e: Swagger
 
-  await app.listen(Env.port);
+  await app.listen(env.port);
 }
 
 bootstrap();

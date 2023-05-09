@@ -17,11 +17,11 @@ import { Env } from '../-global/env';
     UserModule,
     PassportModule,
     JwtModule.registerAsync({
-      useFactory: async () => ({
-        secret: Env.jwtSecret,
-        signOptions: { expiresIn: Env.jwtExpire },
+      useFactory: async (env: Env) => ({
+        secret: env.jwtSecret,
+        signOptions: { expiresIn: env.jwtExpire },
       }),
-      inject: [],
+      inject: [Env],
     }),
     S3Module,
   ],

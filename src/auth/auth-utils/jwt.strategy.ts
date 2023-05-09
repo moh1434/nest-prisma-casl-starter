@@ -8,14 +8,14 @@ import { Env } from '../../-global/env';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(public authService: AuthService) {
+  constructor(public authService: AuthService, env: Env) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         JwtStrategy.extractJWTFromCookie,
         ExtractJwt.fromAuthHeaderAsBearerToken(),
       ]),
       ignoreExpiration: false,
-      secretOrKey: Env.jwtSecret,
+      secretOrKey: env.jwtSecret,
     });
   }
 
