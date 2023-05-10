@@ -18,13 +18,13 @@ export type ReplaceFile = {
 export class S3Service {
   s3Client: S3;
 
-  constructor() {
+  constructor(private readonly env: Env) {
     this.s3Client = new S3({
       credentials: {
-        accessKeyId: Env.S3_ACCESS_KEY,
-        secretAccessKey: Env.S3_SECRET_KEY,
+        accessKeyId: env.S3_ACCESS_KEY,
+        secretAccessKey: env.S3_SECRET_KEY,
       },
-      region: Env.S3_REGION,
+      region: env.S3_REGION,
     });
   }
 
@@ -36,7 +36,7 @@ export class S3Service {
     const prefixedLink = prefix + link;
     try {
       const s3Response = await this.s3Client.putObject({
-        Bucket: Env.S3_BUCKET,
+        Bucket: this.env.S3_BUCKET,
         Key: prefixedLink,
         Body: file.buffer,
         ContentType: file.mimetype,
@@ -56,7 +56,7 @@ export class S3Service {
     try {
       const prefixedLink = prefix + link;
       const s3Response = await this.s3Client.putObject({
-        Bucket: Env.S3_BUCKET,
+        Bucket: this.env.S3_BUCKET,
         Key: prefixedLink,
         Body: BufferFile,
         ContentType: mimeType,
@@ -70,7 +70,7 @@ export class S3Service {
   public deleteObject = async (prefixedLink: string) => {
     try {
       return await this.s3Client.deleteObject({
-        Bucket: Env.S3_BUCKET,
+        Bucket: this.env.S3_BUCKET,
         Key: prefixedLink,
       });
     } catch (error) {
@@ -93,7 +93,7 @@ export class S3Service {
   public getObject = async (prefixedLink: string) => {
     try {
       return await this.s3Client.getObject({
-        Bucket: Env.S3_BUCKET,
+        Bucket: this.env.S3_BUCKET,
         Key: prefixedLink,
       });
     } catch (error) {
@@ -109,7 +109,7 @@ export class S3Service {
   ) => {
     try {
       const params = {
-        Bucket: Env.S3_BUCKET,
+        Bucket: this.env.S3_BUCKET,
         Key: prefixedLink,
       };
 

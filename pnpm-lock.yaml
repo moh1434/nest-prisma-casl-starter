@@ -32,6 +32,7 @@ specifiers:
   class-transformer: ^0.5.1
   class-validator: ^0.14.0
   cookie-parser: ^1.4.6
+  dotenv: ^16.0.3
   eslint: ^8.0.1
   eslint-config-prettier: ^8.3.0
   eslint-plugin-prettier: ^4.0.0
@@ -72,6 +73,7 @@ dependencies:
   class-transformer: 0.5.1
   class-validator: 0.14.0
   cookie-parser: 1.4.6
+  dotenv: 16.0.3
   morgan: 1.10.0
   nestjs-prisma: 0.20.0_5luejdwnmu5omhxasjlxpevbie
   passport: 0.6.0

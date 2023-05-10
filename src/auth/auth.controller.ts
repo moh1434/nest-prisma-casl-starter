@@ -24,7 +24,10 @@ import { Env } from '../-global/env';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly env: Env,
+  ) {}
 
   @Public()
   @Post('/register')
@@ -48,7 +51,7 @@ export class AuthController {
 
     res.cookie(COOKIE_AUTH_NAME, token.access_token, {
       ...SECURE_COOKIE_OPTION,
-      maxAge: Env.cookieExpire,
+      maxAge: this.env.cookieExpire,
     });
 
     return token;

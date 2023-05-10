@@ -5,9 +5,11 @@ import { loggingMiddleware } from './-global/logging.middleware';
 import { AuthModule } from './auth/auth.module';
 import { S3Module } from './-tools/s3/s3.module';
 import { PostModule } from './post/post.module';
+import { GlobalModule } from './-global/global.module';
 
 @Module({
   imports: [
+    GlobalModule,
     PrismaModule.forRoot({
       isGlobal: true,
       prismaServiceOptions: {
@@ -27,6 +29,6 @@ import { PostModule } from './post/post.module';
   ],
   controllers: [],
   providers: [],
-  exports: [],
+  exports: [GlobalModule],
 })
 export class AppModule {}
