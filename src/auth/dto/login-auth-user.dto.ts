@@ -1,9 +1,10 @@
-import { IsEmail, IsString } from 'class-validator';
+import { createZodDto } from '@anatine/zod-nestjs';
+// import { extendApi } from '@anatine/zod-openapi';
+import { z } from 'zod';
 
-export class LoginAuthUserDto {
-  @IsEmail()
-  email: string;
+export const LoginAuthUser = z.object({
+  email: z.string().email(),
+  password: z.string().min(5),
+});
 
-  @IsString()
-  password: string;
-}
+export class LoginAuthUserDto extends createZodDto(LoginAuthUser) {}

@@ -12,6 +12,10 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "baseUrl": "./",
+    // "lib": [
+    //   "esnext",
+    //   "dom"
+    // ],
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": false,

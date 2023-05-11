@@ -4,7 +4,7 @@ import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { PrismaService } from 'nestjs-prisma';
 
-import { ValidationPipe, VersioningType } from '@nestjs/common';
+import { VersioningType } from '@nestjs/common';
 import cookieParser from 'cookie-parser';
 import swaggerTsoa from '../swagger.json';
 import morgan from 'morgan';
@@ -16,7 +16,7 @@ import { AllExceptionsFilter } from './-global/all-exceptions.filter';
 import { Env } from './-global/env';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { tsoaResponseToNestDocument } from './-tools/swagger/tsoa/tsoaResponseToNestDocument';
-
+import { patchNestjsSwagger, ZodValidationPipe } from '@anatine/zod-nestjs';
 async function bootstrap() {
   dotenv.config();
 
@@ -48,13 +48,7 @@ async function bootstrap() {
   // cookie
   app.use(cookieParser(env.cookieKey));
 
-  app.useGlobalPipes(
-    new ValidationPipe({
-      forbidNonWhitelisted: true,
-      whitelist: true,
-      transform: true,
-    }),
-  );
+  app.useGlobalPipes(new ZodValidationPipe());
 
   const { httpAdapter } = app.get(HttpAdapterHost);
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
@@ -77,16 +71,10 @@ async function bootstrap() {
     .setVersion('1.0')
     .addTag('myTag')
     .build();
-  // const document = SwaggerModule.createDocument(app, config);
+
   let document = SwaggerModule.createDocument(app, config);
   // fs.writeFileSync('./nest-swagger.json', JSON.stringify(document));
   document = tsoaResponseToNestDocument(swaggerTsoa, document, '/v1');
-  //tsoa:
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  // const swaggerUi = require('swagger-ui-express');
-  // app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerTsoa));
-  // console.log('swaggerTsoa', swaggerTsoa);
-  //end tsoa
 
   SwaggerModule.setup('api', app, document);
   //end: Swagger

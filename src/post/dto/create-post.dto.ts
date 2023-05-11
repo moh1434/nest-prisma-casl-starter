@@ -1,6 +1,8 @@
-import { IsString } from 'class-validator';
+import { createZodDto } from '@anatine/zod-nestjs';
 
-export class CreatePostDto {
-  @IsString()
-  content: string;
-}
+import { z } from 'zod';
+export const createPost = z.object({
+  content: z.string().min(5),
+});
+
+export class CreatePostDto extends createZodDto(createPost) {}

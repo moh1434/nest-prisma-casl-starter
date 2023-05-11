@@ -56,7 +56,7 @@ export class PostService {
   async create(body: CreatePostDto, authorId: string, isPublished = false) {
     const post = await this.prisma.post.create({
       data: {
-        ...body,
+        content: body.content,
         isPublished,
         author: {
           connect: {
