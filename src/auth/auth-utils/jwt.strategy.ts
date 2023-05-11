@@ -5,6 +5,7 @@ import { Injectable } from '@nestjs/common';
 
 import { COOKIE_AUTH_NAME } from '../../-utils/constant';
 import { Env } from '../../-global/env';
+import { RequestExtended } from '../../-global/global_types';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {

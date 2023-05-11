@@ -25,9 +25,11 @@ import { Mb } from '../-utils/constant';
 import { ApiConsumes } from '@nestjs/swagger';
 import { multerOptions } from '../-tools/s3/multer.config';
 import { JwtUser } from '../auth/auth-utils/user.decorator';
-import { User } from '../-tools/swagger/generator-prisma-class/user';
-import { UpdateUserWithAvatarDto } from '../auth/dto/update-user.dto';
 
+import { UpdateUserWithAvatarDto } from '../auth/dto/update-user.dto';
+import { Request, Route } from 'tsoa';
+
+@Route('user')
 @Controller('user')
 export class UserController {
   constructor(
@@ -37,12 +39,12 @@ export class UserController {
 
   @Roles(UserType.ADMIN)
   @Get('/admin/all')
-  findAll(): Promise<User[]> {
+  findAll() {
     return this.userService.findAll();
   }
 
   @Get('me')
-  async findMyProfile(@JwtUser() authUser: TokenData): Promise<User> {
+  async findMyProfile(@Request() @JwtUser() authUser: TokenData) {
     const user = await this.userService.findById(authUser.id);
     return user;
   }
@@ -51,11 +53,11 @@ export class UserController {
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file', multerOptions(4 * Mb)))
   async update(
-    @Param('id') id: string,
-    @Body() updateUserDto: UpdateUserWithAvatarDto,
-    @CaslForbiddenError() forbiddenError: CaslForbiddenErrorI,
-    @UploadedFile() file: Express.Multer.File,
-  ): Promise<User> {
+    @Request() @Param('id') id: string,
+    @Request() @Body() updateUserDto: UpdateUserWithAvatarDto,
+    @Request() @CaslForbiddenError() forbiddenError: CaslForbiddenErrorI,
+    @Request() @UploadedFile() file: Express.Multer.File,
+  ) {
     updateUserDto.file = file;
     const user = await this.authService.findById(id);
 
@@ -66,8 +68,8 @@ export class UserController {
 
   @Delete(':id')
   async remove(
-    @Param('id') id: string,
-    @CaslForbiddenError() forbiddenError: CaslForbiddenErrorI,
+    @Request() @Param('id') id: string,
+    @Request() @CaslForbiddenError() forbiddenError: CaslForbiddenErrorI,
   ): Promise<void> {
     const authUser = await this.authService.findTypeById(id);
 

@@ -19,9 +19,10 @@ import { COOKIE_AUTH_NAME, Mb, SECURE_COOKIE_OPTION } from '../-utils/constant';
 
 import { LoginAuthUserDto } from './dto/login-auth-user.dto';
 
-import { User } from '../-tools/swagger/generator-prisma-class/user';
 import { Env } from '../-global/env';
+import { Request, Route } from 'tsoa';
 
+@Route('auth')
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -34,9 +35,9 @@ export class AuthController {
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file', multerOptions(4 * Mb)))
   async register(
-    @Body() body: RegisterAuthUserDto,
-    @UploadedFile() file: Express.Multer.File,
-  ): Promise<User> {
+    @Request() @Body() body: RegisterAuthUserDto,
+    @Request() @UploadedFile() file: Express.Multer.File,
+  ) {
     body.file = file;
     return await this.authService.createAccount(body);
   }
@@ -44,8 +45,8 @@ export class AuthController {
   @Public()
   @Post('/login')
   async login(
-    @Body() body: LoginAuthUserDto,
-    @Res({ passthrough: true }) res: Response,
+    @Request() @Body() body: LoginAuthUserDto,
+    @Request() @Res({ passthrough: true }) res: Response,
   ) {
     const token = await this.authService.login(body);
 
@@ -58,7 +59,9 @@ export class AuthController {
   }
 
   @Get('logout')
-  async logout(@Res({ passthrough: true }) res: Response): Promise<void> {
+  async logout(
+    @Request() @Res({ passthrough: true }) res: Response,
+  ): Promise<void> {
     res.cookie(COOKIE_AUTH_NAME, '', {
       ...SECURE_COOKIE_OPTION,
     });

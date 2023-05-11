@@ -1,0 +1,482 @@
+{
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {},
+		"securitySchemes": {}
+	},
+	"info": {
+		"title": "nest_auth_course",
+		"version": "0.0.1",
+		"license": {
+			"name": "UNLICENSED"
+		},
+		"contact": {}
+	},
+	"openapi": "3.0.0",
+	"paths": {
+		"/s3/image/{key}": {
+			"get": {
+				"operationId": "GetImage",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/auth/register": {
+			"post": {
+				"operationId": "Register",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"avatar": {
+											"type": "string"
+										},
+										"id": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"avatar",
+										"id"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/auth/login": {
+			"post": {
+				"operationId": "Login",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"access_token": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"access_token"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/auth/logout": {
+			"get": {
+				"operationId": "Logout",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/post/mine": {
+			"get": {
+				"operationId": "FindMine",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"properties": {
+											"authorId": {
+												"type": "string"
+											},
+											"updatedAt": {
+												"type": "string",
+												"format": "date-time"
+											},
+											"isPublished": {
+												"type": "boolean"
+											},
+											"createdAt": {
+												"type": "string",
+												"format": "date-time"
+											},
+											"content": {
+												"type": "string"
+											},
+											"id": {
+												"type": "string"
+											}
+										},
+										"required": [
+											"authorId",
+											"updatedAt",
+											"isPublished",
+											"createdAt",
+											"content",
+											"id"
+										],
+										"type": "object"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/post/author/{id}": {
+			"get": {
+				"operationId": "FindByAuthorId",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"properties": {
+											"authorId": {
+												"type": "string"
+											},
+											"updatedAt": {
+												"type": "string",
+												"format": "date-time"
+											},
+											"isPublished": {
+												"type": "boolean"
+											},
+											"createdAt": {
+												"type": "string",
+												"format": "date-time"
+											},
+											"content": {
+												"type": "string"
+											},
+											"id": {
+												"type": "string"
+											}
+										},
+										"required": [
+											"authorId",
+											"updatedAt",
+											"isPublished",
+											"createdAt",
+											"content",
+											"id"
+										],
+										"type": "object"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/post/{id}": {
+			"get": {
+				"operationId": "FindById",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"author": {
+											"properties": {
+												"avatar": {
+													"type": "string"
+												},
+												"id": {
+													"type": "string"
+												}
+											},
+											"required": [
+												"avatar",
+												"id"
+											],
+											"type": "object"
+										},
+										"authorId": {
+											"type": "string"
+										},
+										"updatedAt": {
+											"type": "string",
+											"format": "date-time"
+										},
+										"isPublished": {
+											"type": "boolean"
+										},
+										"createdAt": {
+											"type": "string",
+											"format": "date-time"
+										},
+										"content": {
+											"type": "string"
+										},
+										"id": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"author",
+										"authorId",
+										"updatedAt",
+										"isPublished",
+										"createdAt",
+										"content",
+										"id"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/post": {
+			"post": {
+				"operationId": "CreateByUser",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"authorId": {
+											"type": "string"
+										},
+										"updatedAt": {
+											"type": "string",
+											"format": "date-time"
+										},
+										"isPublished": {
+											"type": "boolean"
+										},
+										"createdAt": {
+											"type": "string",
+											"format": "date-time"
+										},
+										"content": {
+											"type": "string"
+										},
+										"id": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"authorId",
+										"updatedAt",
+										"isPublished",
+										"createdAt",
+										"content",
+										"id"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/post/admin/create": {
+			"post": {
+				"operationId": "CreateByAdmin",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"authorId": {
+											"type": "string"
+										},
+										"updatedAt": {
+											"type": "string",
+											"format": "date-time"
+										},
+										"isPublished": {
+											"type": "boolean"
+										},
+										"createdAt": {
+											"type": "string",
+											"format": "date-time"
+										},
+										"content": {
+											"type": "string"
+										},
+										"id": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"authorId",
+										"updatedAt",
+										"isPublished",
+										"createdAt",
+										"content",
+										"id"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/user/admin/all": {
+			"get": {
+				"operationId": "FindAll",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"properties": {
+											"avatar": {
+												"type": "string"
+											},
+											"id": {
+												"type": "string"
+											}
+										},
+										"required": [
+											"avatar",
+											"id"
+										],
+										"type": "object"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/user/me": {
+			"get": {
+				"operationId": "FindMyProfile",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"avatar": {
+											"type": "string"
+										},
+										"id": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"avatar",
+										"id"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/user/{id}": {
+			"patch": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"avatar": {
+											"type": "string"
+										},
+										"id": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"avatar",
+										"id"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			},
+			"delete": {
+				"operationId": "Remove",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/"
+		}
+	]
+}

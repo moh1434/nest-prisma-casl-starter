@@ -1,0 +1,15 @@
+{
+  "entryFile": "./",
+  "noImplicitAdditionalProperties": "throw-on-extras",
+  "controllerPathGlobs": [
+    "src/**/*controller.ts"
+  ],
+  "spec": {
+    "outputDirectory": "./",
+    "yaml": false,
+    "specVersion": 3
+  },
+  "routes": {
+    "routesDir": "./"
+  }
+}
