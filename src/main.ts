@@ -1,4 +1,3 @@
-import { PrismaModel } from './-tools/swagger/generator-prisma-class';
 import { RolesGuard } from './auth/auth-utils/roles.decorator';
 import { HttpAdapterHost, NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
@@ -6,18 +5,22 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { PrismaService } from 'nestjs-prisma';
 
 import { ValidationPipe, VersioningType } from '@nestjs/common';
-import * as cookieParser from 'cookie-parser';
-import * as morgan from 'morgan';
+import cookieParser from 'cookie-parser';
+import swaggerTsoa from '../swagger.json';
+import morgan from 'morgan';
+import dotenv from 'dotenv';
 import { JwtAuthGuard } from './auth/auth-utils/jwt-auth.guard';
 import { COOKIE_AUTH_NAME } from './-utils/constant';
 import { PrismaErrorInterceptor } from './-global/prisma-error.interceptor';
 import { AllExceptionsFilter } from './-global/all-exceptions.filter';
 import { Env } from './-global/env';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { tsoaResponseToNestDocument } from './-tools/swagger/tsoa/tsoaResponseToNestDocument';
 
 async function bootstrap() {
-  require('dotenv').config();
-  console.log(process.env);
-  const app = await NestFactory.create(AppModule);
+  dotenv.config();
+
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const env = app.get<Env>(Env);
   // log
   if (env.isDebug) {
@@ -60,7 +63,7 @@ async function bootstrap() {
 
   app.useGlobalGuards(new RolesGuard(reflector));
 
-  //s: Swagger
+  //start: Swagger
   const config = new DocumentBuilder()
     .addBearerAuth(undefined, 'addBearerAuth')
     .addCookieAuth(COOKIE_AUTH_NAME, {
@@ -75,12 +78,18 @@ async function bootstrap() {
     .addTag('myTag')
     .build();
   // const document = SwaggerModule.createDocument(app, config);
-  const document = SwaggerModule.createDocument(app, config, {
-    extraModels: PrismaModel.extraModels,
-  });
+  let document = SwaggerModule.createDocument(app, config);
+  // fs.writeFileSync('./nest-swagger.json', JSON.stringify(document));
+  document = tsoaResponseToNestDocument(swaggerTsoa, document, '/v1');
+  //tsoa:
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  // const swaggerUi = require('swagger-ui-express');
+  // app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerTsoa));
+  // console.log('swaggerTsoa', swaggerTsoa);
+  //end tsoa
 
   SwaggerModule.setup('api', app, document);
-  //e: Swagger
+  //end: Swagger
 
   await app.listen(env.port);
 }

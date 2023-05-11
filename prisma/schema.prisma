@@ -5,16 +5,6 @@ generator client {
   provider = "prisma-client-js"
 }
 
-//https://github.com/kimjbstar/prisma-class-generator/tree/main/prisma
-generator prismaClassGenerator {
-  provider = "prisma-class-generator"
-
-  output                 = "../src/-tools/swagger/generator-prisma-class"
-  dryRun                 = "false"
-  separateRelationFields = "true"
-  useUndefinedDefault    = "false"
-}
-
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")

@@ -6,6 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
+    "generate_tsoa": "yarn tsoa spec -c ./tsoa.json",
     "generate_casl": "npx ts-node ./src/-tools/casl/generator-casl-prisma.ts",
     "build": "NODE_ENV=production nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -47,7 +48,7 @@
     "nestjs-prisma": "^0.20.0",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
-    "prisma-class-generator": "^0.2.6",
+    "tsoa": "^4.1.3",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
     "uuid": "^9.0.0"
