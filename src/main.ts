@@ -58,8 +58,8 @@ async function bootstrap() {
 
   //start: Swagger
   const config = new DocumentBuilder()
-    .addBearerAuth(undefined, 'addBearerAuth')
-    .addSecurityRequirements('addBearerAuth')
+    .addBearerAuth(undefined, 'note:httpOnly Cookie will be used automatically')
+    .addSecurityRequirements('note:httpOnly Cookie will be used automatically')
     .setTitle('nest example')
     .setDescription('My nest API description')
     .setVersion('1.0')
