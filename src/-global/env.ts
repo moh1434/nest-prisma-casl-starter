@@ -33,11 +33,14 @@ export class Env {
     parseInt(process.env.JWT_EXPIRE_IN_DAY as string) * 86400;
 
   @IsString()
-  readonly cookieKey = process.env.COOKIE_KEY;
+  readonly cookieSignKey = process.env.COOKIE_SIGN_KEY;
+
+  @IsString()
+  readonly jwtRefreshSecret = process.env.JWT_REFRESH_SECRET;
 
   @IsNumber()
-  readonly cookieExpire =
-    parseInt(process.env.COOKIE_EXPIRE_IN_DAY as string) * 86400;
+  readonly jwtRefreshExpire =
+    parseInt(process.env.JWT_REFRESH_EXPIRE_IN_DAY as string) * 86400;
 
   @IsString()
   readonly frontendUrl = process.env.FRONTEND_URL;

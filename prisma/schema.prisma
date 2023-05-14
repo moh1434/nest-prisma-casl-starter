@@ -17,11 +17,12 @@ enum UserType {
 
 //refactor the services to work with this
 model AuthUser {
-  id       String   @id
-  type     UserType @default(USER)
-  email    String   @unique
-  password String
-  user     User     @relation(fields: [id], references: [id])
+  id           String   @id
+  type         UserType @default(USER)
+  email        String   @unique
+  password     String
+  refreshToken String?  @db.VarChar(2048)
+  user         User     @relation(fields: [id], references: [id])
 }
 
 model User {

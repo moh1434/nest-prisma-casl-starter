@@ -71,11 +71,15 @@
 							"application/json": {
 								"schema": {
 									"properties": {
+										"refresh_token": {
+											"type": "string"
+										},
 										"access_token": {
 											"type": "string"
 										}
 									},
 									"required": [
+										"refresh_token",
 										"access_token"
 									],
 									"type": "object"
@@ -94,6 +98,33 @@
 				"responses": {
 					"204": {
 						"description": "No content"
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/auth/refresh-token": {
+			"get": {
+				"operationId": "RefreshTokens",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"access_token": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"access_token"
+									],
+									"type": "object"
+								}
+							}
+						}
 					}
 				},
 				"security": [],

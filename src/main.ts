@@ -10,7 +10,10 @@ import swaggerTsoa from '../swagger.json';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 import { JwtAuthGuard } from './auth/auth-utils/jwt-auth.guard';
-import { COOKIE_AUTH_NAME } from './-utils/constant';
+import {
+  COOKIE_ACCESS_TOKEN_NAME,
+  COOKIE_REFRESH_TOKEN_NAME,
+} from './-utils/constant';
 import { PrismaErrorInterceptor } from './-global/prisma-error.interceptor';
 import { AllExceptionsFilter } from './-global/all-exceptions.filter';
 import { Env } from './-global/env';
@@ -46,7 +49,7 @@ async function bootstrap() {
   app.useGlobalInterceptors(new PrismaErrorInterceptor());
 
   // cookie
-  app.use(cookieParser(env.cookieKey));
+  app.use(cookieParser(env.cookieSignKey));
 
   app.useGlobalPipes(new ZodValidationPipe());
 
@@ -60,7 +63,8 @@ async function bootstrap() {
   //start: Swagger
   const config = new DocumentBuilder()
     .addBearerAuth(undefined, 'addBearerAuth')
-    .addCookieAuth(COOKIE_AUTH_NAME, {
+    //TODO: remove this, httpOnly cookie cant be send manually!
+    .addCookieAuth(COOKIE_ACCESS_TOKEN_NAME, {
       type: 'http',
       in: 'Header',
       scheme: 'Bearer',

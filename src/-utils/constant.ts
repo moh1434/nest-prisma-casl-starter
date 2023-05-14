@@ -1,4 +1,6 @@
-export const COOKIE_AUTH_NAME = 'nest_login';
+export const COOKIE_ACCESS_TOKEN_NAME = 'nest_login';
+export const COOKIE_REFRESH_TOKEN_NAME = 'nest_refresh_token';
+
 export const SECURE_COOKIE_OPTION = {
   httpOnly: true,
   secure: true,
