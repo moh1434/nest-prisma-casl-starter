@@ -44,8 +44,8 @@ export class UserController {
   }
 
   @Get('me')
-  async findMyProfile(@Request() @JwtUser() authUser: TokenData) {
-    const user = await this.userService.findById(authUser.id);
+  async findMyProfile(@Request() @JwtUser() tokenData: TokenData) {
+    const user = await this.userService.findById(tokenData.id);
     return user;
   }
 

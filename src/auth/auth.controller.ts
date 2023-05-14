@@ -75,10 +75,10 @@ export class AuthController {
 
   @Get('logout')
   async logout(
-    @Request() @JwtUser() authUser: TokenData,
+    @Request() @JwtUser() tokenData: TokenData,
     @Request() @Res({ passthrough: true }) res: Response,
   ) {
-    this.authService.logout(authUser);
+    this.authService.logout(tokenData);
     res.cookie(COOKIE_ACCESS_TOKEN_NAME, '', SECURE_COOKIE_OPTION);
     res.cookie(COOKIE_REFRESH_TOKEN_NAME, '', SECURE_COOKIE_OPTION);
     return;
@@ -88,7 +88,7 @@ export class AuthController {
   @UseGuards(RefreshTokenGuard)
   @Get('refresh-token')
   async refreshTokens(
-    @Request() @JwtUser() authUser: TokenData,
+    @Request() @JwtUser() tokenData: TokenData,
     @Request() @Req() req: RequestExtended,
     @Request() @Res({ passthrough: true }) res: Response,
   ) {
@@ -96,7 +96,7 @@ export class AuthController {
       req.signedCookies[COOKIE_REFRESH_TOKEN_NAME] || req.headers.authorization;
 
     const { access_token } = await this.authService.useRefreshToken(
-      authUser,
+      tokenData,
       refreshToken,
     );
 

@@ -19,8 +19,8 @@ export class PostController {
   constructor(private readonly postService: PostService) {}
 
   @Get('/mine')
-  async findMine(@Request() @JwtUser() authUser: TokenData) {
-    return await this.postService.findMine(authUser.id);
+  async findMine(@Request() @JwtUser() tokenData: TokenData) {
+    return await this.postService.findMine(tokenData.id);
   }
 
   @Get('/author/:id')
@@ -43,17 +43,17 @@ export class PostController {
   @Post('/')
   async createByUser(
     @Request() @Body() body: CreatePostDto,
-    @Request() @JwtUser() authUser: TokenData,
+    @Request() @JwtUser() tokenData: TokenData,
   ) {
-    return await this.postService.create(body, authUser.id);
+    return await this.postService.create(body, tokenData.id);
   }
 
   @Roles(UserType.ADMIN)
   @Post('/admin/create')
   async createByAdmin(
     @Request() @Body() body: CreatePostDto,
-    @Request() @JwtUser() authUser: TokenData,
+    @Request() @JwtUser() tokenData: TokenData,
   ) {
-    return await this.postService.create(body, authUser.id, true);
+    return await this.postService.create(body, tokenData.id, true);
   }
 }
