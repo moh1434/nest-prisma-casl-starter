@@ -30,7 +30,7 @@ export class Env {
 
   @IsNumber()
   readonly jwtExpire =
-    parseInt(process.env.JWT_EXPIRE_IN_DAY as string) * 86400;
+    parseInt(process.env.JWT_EXPIRE_IN_HOUR as string) * 3600;
 
   @IsString()
   readonly cookieSignKey = process.env.COOKIE_SIGN_KEY;
