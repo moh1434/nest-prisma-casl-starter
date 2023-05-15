@@ -1,6 +1,14 @@
 import { Request, Route } from 'tsoa';
 import { CreatePostDto } from './dto/create-post.dto';
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  CacheTTL,
+  Controller,
+  Get,
+  Param,
+  Post,
+  UseInterceptors,
+} from '@nestjs/common';
 import { PostService } from './post.service';
 
 import { TokenData } from '../auth/auth-utils/types-auth';
@@ -12,6 +20,8 @@ import {
 import { subject } from '@casl/ability';
 import { Roles } from '../auth/auth-utils/roles.decorator';
 import { UserType } from '@prisma/client';
+import { cacheMinute } from '../-utils/constant';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Route('post')
 @Controller('post')
@@ -23,6 +33,8 @@ export class PostController {
     return await this.postService.findMine(tokenData.id);
   }
 
+  @UseInterceptors(CacheInterceptor)
+  @CacheTTL(cacheMinute * 2) // override TTL to 2 minutes
   @Get('/author/:id')
   async findByAuthorId(@Request() @Param('id') id: string) {
     return await this.postService.findByAuthorId(id);

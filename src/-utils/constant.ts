@@ -10,6 +10,8 @@ export const SECURE_COOKIE_OPTION = {
 export const Kb = 1000;
 export const Mb = 1000 * Kb;
 
+export const cacheMinute = 1000 * 60;
+
 //images prefixes:
 export enum FilePrefix {
   empty = '',
