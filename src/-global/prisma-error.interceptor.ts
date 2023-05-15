@@ -1,10 +1,10 @@
 import {
-  BadRequestException,
   NotFoundException,
   Injectable,
   NestInterceptor,
   CallHandler,
   ExecutionContext,
+  ConflictException,
 } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { Observable, catchError } from 'rxjs';
@@ -22,7 +22,7 @@ export class PrismaErrorInterceptor implements NestInterceptor {
 
           if (error.code === 'P2002') {
             // unique failed
-            throw new BadRequestException(`Already Exist`);
+            throw new ConflictException();
           }
           if (error.code == 'P2025') {
             const cause =
@@ -32,7 +32,7 @@ export class PrismaErrorInterceptor implements NestInterceptor {
             throw new NotFoundException(`${cause}`);
           }
           if (error.code == 'P2003') {
-            throw new BadRequestException('foreign key failed');
+            throw new ConflictException('foreign key failed');
           }
         }
         throw error;
