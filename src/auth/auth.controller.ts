@@ -63,11 +63,11 @@ export class AuthController {
 
     res.cookie(COOKIE_ACCESS_TOKEN_NAME, tokens.access_token, {
       ...SECURE_COOKIE_OPTION,
-      maxAge: this.env.jwtExpire,
+      maxAge: this.env.jwtExpire * 1000,
     });
     res.cookie(COOKIE_REFRESH_TOKEN_NAME, tokens.refresh_token, {
       ...SECURE_COOKIE_OPTION,
-      maxAge: this.env.jwtRefreshExpire,
+      maxAge: this.env.jwtRefreshExpire * 1000,
     });
 
     return tokens;
@@ -102,7 +102,7 @@ export class AuthController {
 
     res.cookie(COOKIE_ACCESS_TOKEN_NAME, access_token, {
       ...SECURE_COOKIE_OPTION,
-      maxAge: this.env.jwtExpire,
+      maxAge: this.env.jwtExpire * 1000,
     });
 
     return { access_token };
