@@ -128,7 +128,7 @@ export class AuthService {
     await this.prisma.authUser.update({
       where: { id: validateUser.id },
       data: {
-        refreshToken: tokens.refresh_token,
+        refreshToken: await this.hash.hash(tokens.refresh_token),
       },
       select: {
         id: true,
@@ -167,7 +167,12 @@ export class AuthService {
       throw new ForbiddenException();
     }
 
-    if (authUser.refreshToken !== refreshToken) {
+    const isRightRefreshToken = await this.hash.compare(
+      refreshToken,
+      authUser.refreshToken,
+    );
+
+    if (!isRightRefreshToken) {
       throw new ForbiddenException();
     }
     const accessToken = await this.generateAccessToken(tokenData);
