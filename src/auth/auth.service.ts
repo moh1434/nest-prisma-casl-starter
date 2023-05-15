@@ -1,7 +1,7 @@
 import { PrismaService } from 'nestjs-prisma';
 import { RegisterAuthUserDto } from './dto/register-user.dto';
 
-import { PasswordHashService } from './auth-utils/password.helper';
+import { HashService } from './auth-utils/hash.helper';
 import {
   Injectable,
   UnauthorizedException,
@@ -24,7 +24,7 @@ export class AuthService {
   constructor(
     private prisma: PrismaService,
     private jwtService: JwtService,
-    private hash: PasswordHashService,
+    private hash: HashService,
     private s3Service: S3Service,
     private env: Env,
   ) {}
