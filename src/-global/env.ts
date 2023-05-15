@@ -18,7 +18,7 @@ export class Env {
     this.validateEnv();
   }
   @IsNumber()
-  readonly port = parseInt(process.env.PORT || '3000');
+  readonly port = Number(process.env.PORT || '3000');
   @IsEnum(NODE_ENV)
   readonly NODE_ENV = process.env.NODE_ENV;
   @IsBoolean()
@@ -29,8 +29,7 @@ export class Env {
   readonly jwtSecret = process.env.JWT_SECRET;
 
   @IsNumber()
-  readonly jwtExpire =
-    parseInt(process.env.JWT_EXPIRE_IN_HOUR as string) * 3600;
+  readonly jwtExpire = Number(process.env.JWT_EXPIRE_IN_HOUR) * 3600;
 
   @IsString()
   readonly cookieSignKey = process.env.COOKIE_SIGN_KEY;
@@ -40,7 +39,7 @@ export class Env {
 
   @IsNumber()
   readonly jwtRefreshExpire =
-    parseInt(process.env.JWT_REFRESH_EXPIRE_IN_DAY as string) * 86400;
+    Number(process.env.JWT_REFRESH_EXPIRE_IN_DAY) * 86400;
 
   @IsString()
   readonly frontendUrl = process.env.FRONTEND_URL;
