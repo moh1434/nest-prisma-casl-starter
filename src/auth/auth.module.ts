@@ -11,12 +11,19 @@ import { RefreshTokenStrategy } from './auth-utils/jwt-refresh.strategy';
 import { UserModule } from 'src/user/user.module';
 
 import { S3Module } from '../-tools/s3/s3.module';
+import { CookieService } from './auth-utils/cookie.service';
 
 @Global()
 @Module({
   imports: [UserModule, PassportModule, JwtModule.register({}), S3Module],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, RefreshTokenStrategy, HashService],
+  providers: [
+    AuthService,
+    JwtStrategy,
+    RefreshTokenStrategy,
+    HashService,
+    CookieService,
+  ],
   exports: [AuthService],
 })
 export class AuthModule {}

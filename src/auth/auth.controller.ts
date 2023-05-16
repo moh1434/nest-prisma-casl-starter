@@ -1,3 +1,4 @@
+import { CookieService } from './auth-utils/cookie.service';
 import { JwtUser } from './auth-utils/user.decorator';
 import { RegisterAuthUserDto } from './dto/register-user.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -18,16 +19,10 @@ import {
 import { Public } from './auth-utils/public.decorator';
 import { Response } from 'express';
 
-import {
-  COOKIE_ACCESS_TOKEN_NAME,
-  COOKIE_REFRESH_TOKEN_NAME,
-  Mb,
-  SECURE_COOKIE_OPTION,
-} from '../-utils/constant';
+import { COOKIE_REFRESH_TOKEN_NAME, Mb } from '../-utils/constant';
 
 import { LoginAuthUserDto } from './dto/login-auth-user.dto';
 
-import { Env } from '../-global/env';
 import { Request, Route } from 'tsoa';
 import { TokenData } from './auth-utils/types-auth';
 import { RefreshTokenGuard } from './auth-utils/jwt-refresh.guard';
@@ -38,7 +33,7 @@ import { RequestExtended } from '../-global/global_types';
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
-    private readonly env: Env,
+    private readonly cookieService: CookieService,
   ) {}
 
   @Public()
@@ -61,14 +56,8 @@ export class AuthController {
   ) {
     const tokens = await this.authService.login(body);
 
-    res.cookie(COOKIE_ACCESS_TOKEN_NAME, tokens.access_token, {
-      ...SECURE_COOKIE_OPTION,
-      maxAge: this.env.jwtExpire * 1000,
-    });
-    res.cookie(COOKIE_REFRESH_TOKEN_NAME, tokens.refresh_token, {
-      ...SECURE_COOKIE_OPTION,
-      maxAge: this.env.jwtRefreshExpire * 1000,
-    });
+    this.cookieService.setAccessToken(res, tokens.access_token);
+    this.cookieService.setRefreshToken(res, tokens.refresh_token);
 
     return tokens;
   }
@@ -79,14 +68,16 @@ export class AuthController {
     @Request() @Res({ passthrough: true }) res: Response,
   ) {
     this.authService.logout(tokenData);
-    res.cookie(COOKIE_ACCESS_TOKEN_NAME, '', SECURE_COOKIE_OPTION);
-    res.cookie(COOKIE_REFRESH_TOKEN_NAME, '', SECURE_COOKIE_OPTION);
+
+    this.cookieService.deleteAccessToken(res);
+    this.cookieService.deleteRefreshToken(res);
+
     return;
   }
 
   @Public() //this exclude the global JwtAuthGuard
   @UseGuards(RefreshTokenGuard)
-  @Get('refresh-token')
+  @Get('refresh-token') //this also used in cookie.service.ts
   async refreshTokens(
     @Request() @JwtUser() tokenData: TokenData,
     @Request() @Req() req: RequestExtended,
@@ -100,10 +91,7 @@ export class AuthController {
       refreshToken,
     );
 
-    res.cookie(COOKIE_ACCESS_TOKEN_NAME, access_token, {
-      ...SECURE_COOKIE_OPTION,
-      maxAge: this.env.jwtExpire * 1000,
-    });
+    this.cookieService.setAccessToken(res, access_token);
 
     return { access_token };
   }
