@@ -25,6 +25,7 @@ export class CookieService {
   private readonly COOKIE_REFRESH_TOKEN_OPTIONS: CookieOptions = {
     ...this.BASE_COOKIE_OPTIONS,
     maxAge: this.env.jwtRefreshExpire * 1000,
+    path: 'refresh-token',
   };
 
   setAccessToken(res: Response, accessToken: string) {
