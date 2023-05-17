@@ -2,13 +2,7 @@ import { PrismaService } from 'nestjs-prisma';
 import { RegisterAuthUserDto } from './dto/register-user.dto';
 
 import { HashService } from './auth-utils/hash.helper';
-import {
-  Injectable,
-  UnauthorizedException,
-  ConflictException,
-  NotFoundException,
-  ForbiddenException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 
@@ -18,6 +12,10 @@ import { Prisma, UserType } from '@prisma/client';
 import { S3Service } from '../-tools/s3/s3.service';
 import { FilePrefix } from '../-utils/constant';
 import { Env } from '../-global/env';
+import { cForbiddenException } from '../-global/exceptions/forbidden.exception';
+import { cUnauthorizedException } from '../-global/exceptions/unauthorized.exception';
+import { cConflictException } from '../-global/exceptions/conflict.exception';
+import { cNotFoundException } from '../-global/exceptions/not-found.exception';
 
 @Injectable()
 export class AuthService {
@@ -60,13 +58,14 @@ export class AuthService {
   //
   private async validateAuthUserPassword(email: string, inputPassword: string) {
     const authUser = await this.findPasswordByEmail(email);
-    if (!authUser) throw new UnauthorizedException();
+    if (!authUser) throw new cUnauthorizedException('NOT_FOUND');
 
     const isRightPassword = await this.hash.compare(
       inputPassword,
       authUser.password,
     );
-    if (!isRightPassword) throw new UnauthorizedException();
+    if (!isRightPassword)
+      throw new cUnauthorizedException('INVALID_CREDENTIALS');
 
     const { password, ...userWithoutPassword } = authUser;
     return userWithoutPassword as AuthUserWithoutPassword;
@@ -81,7 +80,7 @@ export class AuthService {
       select: { id: true },
     });
     if (isUserExists) {
-      throw new ConflictException();
+      throw new cConflictException('ALREADY_EXISTS');
     }
     let prefixedLink: string | undefined;
     if (body.file) {
@@ -144,7 +143,7 @@ export class AuthService {
       select: { id: true },
     });
     if (!isExists) {
-      throw new NotFoundException();
+      throw new cNotFoundException('NOT_FOUND');
     }
     await this.prisma.authUser.update({
       where: {
@@ -164,7 +163,7 @@ export class AuthService {
       select: { id: true, refreshToken: true },
     });
     if (!authUser || !authUser.refreshToken) {
-      throw new ForbiddenException();
+      throw new cForbiddenException('TOKEN_NOT_SEND');
     }
 
     const isRightRefreshToken = await this.hash.compare(
@@ -173,8 +172,9 @@ export class AuthService {
     );
 
     if (!isRightRefreshToken) {
-      throw new ForbiddenException();
+      throw new cForbiddenException('TOKEN_INVALID');
     }
+
     const accessToken = await this.generateAccessToken(tokenData);
 
     return { access_token: accessToken };

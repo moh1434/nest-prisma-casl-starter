@@ -1,13 +1,14 @@
 import {
-  NotFoundException,
   Injectable,
   NestInterceptor,
   CallHandler,
   ExecutionContext,
-  ConflictException,
 } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { Observable, catchError } from 'rxjs';
+import { cConflictException } from './exceptions/conflict.exception';
+import { cNotFoundException } from './exceptions/not-found.exception';
+import { cInternalServerErrorException } from './exceptions/internal-server-error.exception';
 
 @Injectable()
 export class PrismaErrorInterceptor implements NestInterceptor {
@@ -22,17 +23,17 @@ export class PrismaErrorInterceptor implements NestInterceptor {
 
           if (error.code === 'P2002') {
             // unique failed
-            throw new ConflictException();
+            throw new cConflictException('ALREADY_EXISTS');
           }
           if (error.code == 'P2025') {
             const cause =
               (error?.meta?.cause as string) ??
               this.exceptionShortMessage(error.message); // findUniqueOrThrow() error not have error.meta.cause;
 
-            throw new NotFoundException(`${cause}`);
+            throw new cNotFoundException('NOT_FOUND', undefined, `${cause}`);
           }
           if (error.code == 'P2003') {
-            throw new ConflictException('foreign key failed');
+            throw new cInternalServerErrorException('FOREIGN_KEY_FAILED');
           }
         }
         throw error;

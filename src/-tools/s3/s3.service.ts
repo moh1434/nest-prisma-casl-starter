@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import {
   S3,
   GetObjectCommand,
@@ -10,6 +10,7 @@ import { Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import { FilePrefix } from '../../-utils/constant';
 import { Env } from '../../-global/env';
+import { cNotFoundException } from '../../-global/exceptions/not-found.exception';
 export type ReplaceFile = {
   newFile: Express.Multer.File;
   oldToDelete: string | null;
@@ -160,7 +161,7 @@ export class S3Service {
         res.end();
       });
     } catch (err: any) {
-      if (err.name === 'NotFound') throw new NotFoundException();
+      if (err.name === 'NotFound') throw new cNotFoundException('NOT_FOUND');
 
       throw err;
     }
