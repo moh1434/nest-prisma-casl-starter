@@ -6,7 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "generate_tsoa": "yarn tsoa spec -c ./tsoa.json",
+    "generate_tsoa": "npx tsoa spec -c ./tsoa.json",
     "generate_casl": "npx ts-node ./src/-tools/casl/generator-casl-prisma.ts",
     "build": "NODE_ENV=production nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
