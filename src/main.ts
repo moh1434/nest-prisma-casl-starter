@@ -67,7 +67,7 @@ async function bootstrap() {
 
   let document = SwaggerModule.createDocument(app, config);
   // fs.writeFileSync('./nest-swagger.json', JSON.stringify(document));
-  document = tsoaResponseToNestDocument(swaggerTsoa, document, '/v1');
+  document = tsoaResponseToNestDocument(swaggerTsoa, document, true);
 
   SwaggerModule.setup('api', app, document);
   //end: Swagger

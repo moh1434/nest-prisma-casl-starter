@@ -6,17 +6,28 @@ import {
   ResponseObject,
 } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
 
+//INPUTS.path example tsoa{{ /auth/register }}  nest{{ /v2/auth/register }}
 export function tsoaResponseToNestDocument(
   swaggerTsoa: OpenAPIObject,
   document: OpenAPIObject,
-  pathPrefix: string,
+  withVersionPrefix: boolean,
 ) {
-  const tsoaPathKeys = Object.keys(
-    swaggerTsoa.paths,
-  ) as (keyof typeof swaggerTsoa.paths)[];
+  //
+  const nestPathKeysToVersionPrefix = {}; //nestPathKeysToVersionPrefix={ '/auth/register':'/v1', '/auth/login': '/v2' }
+  if (withVersionPrefix) {
+    Object.keys(document.paths).forEach((path) => {
+      const pathParts = path.split('/');
+      const versionPrefix = '/' + pathParts[1];
+      pathParts.splice(1, 1);
+      const pathWithoutVersionPrefix = pathParts.join('/');
 
-  tsoaPathKeys.forEach((tsoaPathKey) => {
-    const nestDocumentPathKey = pathPrefix + tsoaPathKey;
+      nestPathKeysToVersionPrefix[pathWithoutVersionPrefix] = versionPrefix;
+    });
+  }
+  //
+  Object.keys(swaggerTsoa.paths).forEach((tsoaPathKey) => {
+    const nestDocumentPathKey =
+      (nestPathKeysToVersionPrefix[tsoaPathKey] ?? '') + tsoaPathKey;
 
     if (!document.paths[nestDocumentPathKey]) {
       console.warn(
