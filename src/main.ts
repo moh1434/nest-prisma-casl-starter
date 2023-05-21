@@ -10,12 +10,12 @@ import swaggerTsoa from '../swagger.json';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 import { JwtAuthGuard } from './auth/auth-utils/jwt-auth.guard';
-import { PrismaErrorInterceptor } from './-global/prisma-error.interceptor';
-import { AllExceptionsFilter } from './-global/all-exceptions.filter';
-import { Env } from './-global/env';
+import { PrismaErrorInterceptor } from './utils/exception/prisma-error.interceptor';
+import { AllExceptionsFilter } from './utils/exception/all-exceptions.filter';
+import { Env } from './utils/env';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { tsoaResponseToNestDocument } from './-tools/swagger/tsoa/tsoaResponseToNestDocument';
-import { patchNestjsSwagger, ZodValidationPipe } from '@anatine/zod-nestjs';
+import { tsoaResponseToNestDocument } from './utils/tsoaResponseToNestDocument';
+import { ZodValidationPipe } from '@anatine/zod-nestjs';
 async function bootstrap() {
   dotenv.config();
 
@@ -63,7 +63,6 @@ async function bootstrap() {
     .setTitle('nest example')
     .setDescription('My nest API description')
     .setVersion('1.0')
-    .addTag('myTag')
     .build();
 
   let document = SwaggerModule.createDocument(app, config);

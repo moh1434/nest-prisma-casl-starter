@@ -11,6 +11,6 @@ const overrides: OverrideSubjects = {
   User: null,
 };
 generateCaslSubjectsToFile(
-  'src/-tools/casl/generated/subjectsList.ts',
+  'src/utils/casl/generated/subjectsList.ts',
   overrides,
 );

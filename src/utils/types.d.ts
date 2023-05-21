@@ -1,6 +1,6 @@
 import { TokenData } from 'src/auth/auth-utils/types-auth';
 import { Request } from 'express';
-import { CaslForbiddenErrorI } from '../-tools/casl/casl-forbidden-error.decorator';
+import { CaslForbiddenErrorI } from './casl/casl-forbidden-error.decorator';
 
 export type OmitStrict<ObjectType, KeysType extends keyof ObjectType> = Pick<
   ObjectType,

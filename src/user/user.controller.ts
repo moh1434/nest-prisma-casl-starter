@@ -20,10 +20,10 @@ import { subject } from '@casl/ability';
 import {
   CaslForbiddenError,
   CaslForbiddenErrorI,
-} from '../-tools/casl/casl-forbidden-error.decorator';
-import { Mb } from '../-utils/constant';
+} from '../utils/casl/casl-forbidden-error.decorator';
+import { Mb } from '../utils/constant';
 import { ApiConsumes } from '@nestjs/swagger';
-import { multerOptions } from '../-tools/s3/multer.config';
+import { multerOptions } from '../s3/multer.config';
 import { JwtUser } from '../auth/auth-utils/user.decorator';
 
 import { UpdateUserWithAvatarDto } from '../auth/dto/update-user.dto';

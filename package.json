@@ -7,7 +7,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "generate_tsoa": "npx tsoa spec -c ./tsoa.json",
-    "generate_casl": "npx ts-node ./src/-tools/casl/generator-casl-prisma.ts",
+    "generate_casl": "npx ts-node src/utils/casl/generated/config.ts",
     "build": "NODE_ENV=production nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "NODE_ENV=development nest start",

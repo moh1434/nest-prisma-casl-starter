@@ -4,8 +4,8 @@ import { Injectable } from '@nestjs/common';
 import { UpdateUserWithAvatarDto } from '../auth/dto/update-user.dto';
 import { Prisma } from '@prisma/client';
 
-import { FilePrefix } from '../-utils/constant';
-import { S3Service } from '../-tools/s3/s3.service';
+import { FilePrefix } from '../utils/constant';
+import { S3Service } from '../s3/s3.service';
 
 @Injectable()
 export class UserService {

@@ -10,7 +10,7 @@ import { RefreshTokenStrategy } from './auth-utils/jwt-refresh.strategy';
 
 import { UserModule } from 'src/user/user.module';
 
-import { S3Module } from '../-tools/s3/s3.module';
+import { S3Module } from '../s3/s3.module';
 import { CookieService } from './auth-utils/cookie.service';
 
 @Global()
