@@ -3,7 +3,7 @@ import { JwtUser } from './auth-utils/user.decorator';
 import { RegisterAuthUserDto } from './dto/register-user.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiConsumes } from '@nestjs/swagger';
-import { multerOptions } from '../-tools/s3/multer.config';
+import { multerOptions } from '../s3/multer.config';
 import { AuthService } from './auth.service';
 import {
   Controller,
@@ -19,14 +19,14 @@ import {
 import { Public } from './auth-utils/public.decorator';
 import { Response } from 'express';
 
-import { COOKIE_REFRESH_TOKEN_NAME, Mb } from '../-utils/constant';
+import { COOKIE_REFRESH_TOKEN_NAME, Mb } from '../utils/constant';
 
 import { LoginAuthUserDto } from './dto/login-auth-user.dto';
 
 import { Request, Route } from 'tsoa';
 import { TokenData } from './auth-utils/types-auth';
 import { RefreshTokenGuard } from './auth-utils/jwt-refresh.guard';
-import { RequestExtended } from '../-global/global_types';
+import { RequestExtended } from '../utils/types';
 
 @Route('auth')
 @Controller('auth')

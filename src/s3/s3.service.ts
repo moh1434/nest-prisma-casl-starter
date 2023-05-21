@@ -8,9 +8,9 @@ import {
 import { Response } from 'express';
 
 import { v4 as uuidv4 } from 'uuid';
-import { FilePrefix } from '../../-utils/constant';
-import { Env } from '../../-global/env';
-import { cNotFoundException } from '../../-global/exceptions/not-found.exception';
+import { FilePrefix } from '../utils/constant';
+import { Env } from '../utils/env';
+import { cNotFoundException } from '../utils/exception/errors/not-found.exception';
 export type ReplaceFile = {
   newFile: Express.Multer.File;
   oldToDelete: string | null;

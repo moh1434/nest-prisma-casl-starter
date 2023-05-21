@@ -2,7 +2,7 @@ import { SetMetadata } from '@nestjs/common';
 import { UserType } from '@prisma/client';
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { RequestExtended } from '../../-global/global_types';
+import { RequestExtended } from '../../utils/types';
 
 export const ROLES_KEY = 'roles';
 export const Roles = (...roles: UserType[]) => SetMetadata(ROLES_KEY, roles);

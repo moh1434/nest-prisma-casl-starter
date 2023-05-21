@@ -9,13 +9,13 @@ import { JwtService } from '@nestjs/jwt';
 import { AuthUserWithoutPassword, TokenData } from './auth-utils/types-auth';
 import { LoginAuthUserDto } from './dto/login-auth-user.dto';
 import { Prisma, UserType } from '@prisma/client';
-import { S3Service } from '../-tools/s3/s3.service';
-import { FilePrefix } from '../-utils/constant';
-import { Env } from '../-global/env';
-import { cForbiddenException } from '../-global/exceptions/forbidden.exception';
-import { cUnauthorizedException } from '../-global/exceptions/unauthorized.exception';
-import { cConflictException } from '../-global/exceptions/conflict.exception';
-import { cNotFoundException } from '../-global/exceptions/not-found.exception';
+import { S3Service } from '../s3/s3.service';
+import { FilePrefix } from '../utils/constant';
+import { Env } from '../utils/env';
+import { cForbiddenException } from '../utils/exception/errors/forbidden.exception';
+import { cUnauthorizedException } from '../utils/exception/errors/unauthorized.exception';
+import { cConflictException } from '../utils/exception/errors/conflict.exception';
+import { cNotFoundException } from '../utils/exception/errors/not-found.exception';
 
 @Injectable()
 export class AuthService {

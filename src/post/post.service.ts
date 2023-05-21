@@ -3,7 +3,7 @@ import { Prisma } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
 import { UserService } from '../user/user.service';
 import { CreatePostDto } from './dto/create-post.dto';
-import { cForbiddenException } from '../-global/exceptions/forbidden.exception';
+import { cForbiddenException } from '../utils/exception/errors/forbidden.exception';
 
 @Injectable()
 export class PostService {

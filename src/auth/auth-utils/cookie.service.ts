@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 
-import { Env } from '../../-global/env';
+import { Env } from '../../utils/env';
 import { CookieOptions } from 'express';
 import {
   COOKIE_ACCESS_TOKEN_NAME,
   COOKIE_REFRESH_TOKEN_NAME,
-} from '../../-utils/constant';
+} from '../../utils/constant';
 
 import { Response } from 'express';
 

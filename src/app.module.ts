@@ -1,23 +1,21 @@
-import { Logger, Module } from '@nestjs/common';
+import { Global, Logger, Module } from '@nestjs/common';
 import { CacheModule } from '@nestjs/cache-manager';
 import { UserModule } from './user/user.module';
 import { PrismaModule } from 'nestjs-prisma';
-import { loggingMiddleware } from './-global/logging.middleware';
 import { AuthModule } from './auth/auth.module';
-import { S3Module } from './-tools/s3/s3.module';
+import { S3Module } from './s3/s3.module';
 import { PostModule } from './post/post.module';
-import { GlobalModule } from './-global/global.module';
-import { cacheMinute } from './-utils/constant';
+import { cacheMinute } from './utils/constant';
 import type { RedisClientOptions } from 'redis';
 import { redisStore } from 'cache-manager-redis-yet';
+import { Env } from './utils/env';
 
+@Global()
 @Module({
   imports: [
-    GlobalModule,
     PrismaModule.forRoot({
       isGlobal: true,
       prismaServiceOptions: {
-        middlewares: [loggingMiddleware(new Logger('PrismaMiddleware'))], // configure your prisma middleware
         prismaOptions:
           process.env.NODE_ENV !== 'production'
             ? {
@@ -43,7 +41,7 @@ import { redisStore } from 'cache-manager-redis-yet';
     PostModule,
   ],
   controllers: [],
-  providers: [],
-  exports: [GlobalModule],
+  providers: [Env],
+  exports: [Env],
 })
 export class AppModule {}

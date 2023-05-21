@@ -16,11 +16,11 @@ import { JwtUser } from '../auth/auth-utils/user.decorator';
 import {
   CaslForbiddenError,
   CaslForbiddenErrorI,
-} from '../-tools/casl/casl-forbidden-error.decorator';
+} from '../utils/casl/casl-forbidden-error.decorator';
 import { subject } from '@casl/ability';
 import { Roles } from '../auth/auth-utils/roles.decorator';
 import { UserType } from '@prisma/client';
-import { cacheMinute } from '../-utils/constant';
+import { cacheMinute } from '../utils/constant';
 import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Route('post')
