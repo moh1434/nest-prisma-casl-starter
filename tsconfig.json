@@ -23,6 +23,9 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
-    "typeRoots": ["./node_modules/@types", "src/utils/types.d.ts"]
+    "typeRoots": [
+      "./node_modules/@types",
+      "src/utils/types.d.ts"
+    ]
   }
 }
