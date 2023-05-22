@@ -1,11 +1,9 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 
-import { AppAbility, createForUser } from './casl-rules.factory';
+import { createForUser } from './casl-rules.factory';
 
 import { ForbiddenError } from '@casl/ability';
 import { RequestExtended } from '../types';
-
-export type CaslForbiddenErrorI = ForbiddenError<AppAbility>;
 
 export const CaslForbiddenError = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {

@@ -13,10 +13,8 @@ import { PostService } from './post.service';
 
 import { TokenData } from '../auth/auth-utils/types-auth';
 import { JwtUser } from '../auth/auth-utils/user.decorator';
-import {
-  CaslForbiddenError,
-  CaslForbiddenErrorI,
-} from '../utils/casl/casl-forbidden-error.decorator';
+import { CaslForbiddenError } from '../utils/casl/casl-forbidden-error.decorator';
+import { CaslForbiddenErrorI } from '../utils/casl/casl-rules.factory';
 import { subject } from '@casl/ability';
 import { Roles } from '../auth/auth-utils/roles.decorator';
 import { UserType } from '@prisma/client';

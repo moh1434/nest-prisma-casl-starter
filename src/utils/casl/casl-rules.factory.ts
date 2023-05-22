@@ -2,6 +2,7 @@ import { TokenData } from '../../auth/auth-utils/types-auth';
 import { AbilityBuilder, PureAbility } from '@casl/ability';
 import { PrismaQuery, Subjects, createPrismaAbility } from '@casl/prisma';
 import { SubjectsList } from './generated/subjectsList';
+import { ForbiddenError } from '@casl/ability';
 
 export type Action = 'manage' | 'create' | 'read' | 'update' | 'delete';
 
@@ -9,6 +10,7 @@ export type AppAbility = PureAbility<
   [Action, Subjects<SubjectsList> | 'all'],
   PrismaQuery
 >;
+export type CaslForbiddenErrorI = ForbiddenError<AppAbility>;
 
 export function createForUser(user: TokenData) {
   const { can, cannot, build } = new AbilityBuilder<AppAbility>(

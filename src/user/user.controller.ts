@@ -17,10 +17,8 @@ import { UserService } from './user.service';
 import { Roles } from 'src/auth/auth-utils/roles.decorator';
 import { UserType } from '@prisma/client';
 import { subject } from '@casl/ability';
-import {
-  CaslForbiddenError,
-  CaslForbiddenErrorI,
-} from '../utils/casl/casl-forbidden-error.decorator';
+import { CaslForbiddenError } from '../utils/casl/casl-forbidden-error.decorator';
+import { CaslForbiddenErrorI } from '../utils/casl/casl-rules.factory';
 import { Mb } from '../utils/constant';
 import { ApiConsumes } from '@nestjs/swagger';
 import { multerOptions } from '../s3/multer.config';
