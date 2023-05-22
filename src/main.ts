@@ -15,7 +15,8 @@ import { AllExceptionsFilter } from './utils/exception/all-exceptions.filter';
 import { Env } from './utils/env';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { tsoaResponseToNestDocument } from './utils/tsoaResponseToNestDocument';
-import { ZodValidationPipe } from '@anatine/zod-nestjs';
+import { ZodValidationPipe } from './utils/exception/zod-validation-pipe';
+
 async function bootstrap() {
   dotenv.config();
 

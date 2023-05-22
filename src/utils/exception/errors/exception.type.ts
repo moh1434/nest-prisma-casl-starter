@@ -5,7 +5,8 @@ export type ErrorCode =
   | 'ALREADY_EXISTS'
   | 'NOT_FOUND'
   | 'FOREIGN_KEY_FAILED'
-  | 'INVALID_CREDENTIALS';
+  | 'INVALID_CREDENTIALS'
+  | 'INVALID_INPUT_ZOD';
 
 type ShowToUserType = 'snackbar' | 'alert';
 
