@@ -3,7 +3,7 @@ import {
   HttpExceptionOptions,
   HttpStatus,
 } from '@nestjs/common';
-import { ErrorCode, ExceptionDetails } from './-types';
+import { ErrorCode, ExceptionDetails } from './exception.type';
 /**
  * Defines an HTTP exception for *Unsupported Media Type* type errors.
  *
