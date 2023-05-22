@@ -6,7 +6,8 @@ export type ErrorCode =
   | 'NOT_FOUND'
   | 'FOREIGN_KEY_FAILED'
   | 'INVALID_CREDENTIALS'
-  | 'INVALID_INPUT_ZOD';
+  | 'INVALID_INPUT_ZOD'
+  | 'PERMISSION_DENIED_CASL';
 
 type ShowToUserType = 'snackbar' | 'alert';
 
