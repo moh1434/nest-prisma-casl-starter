@@ -3,7 +3,7 @@ import {
   HttpExceptionOptions,
   HttpStatus,
 } from '@nestjs/common';
-import { ErrorCode, ShowToUser } from './-types';
+import { ErrorCode, ExceptionDetails } from './-types';
 /**
  * Defines an HTTP exception for *Unsupported Media Type* type errors.
  *
@@ -38,7 +38,7 @@ export class cUnsupportedMediaTypeException extends HttpException {
    */
   constructor(
     code: ErrorCode,
-    showToUser?: ShowToUser,
+    details?: ExceptionDetails,
     descriptionOrOptions:
       | string
       | HttpExceptionOptions = 'Unsupported Media Type',
@@ -50,7 +50,7 @@ export class cUnsupportedMediaTypeException extends HttpException {
       HttpException.createBody(
         {
           code,
-          showToUser,
+          details,
         },
         description,
         HttpStatus.UNSUPPORTED_MEDIA_TYPE,

@@ -3,7 +3,7 @@ import {
   HttpExceptionOptions,
   HttpStatus,
 } from '@nestjs/common';
-import { ErrorCode, ShowToUser } from './-types';
+import { ErrorCode, ExceptionDetails } from './-types';
 
 /**
  * Defines an HTTP exception for *Bad Gateway* type errors.
@@ -39,7 +39,7 @@ export class cBadGatewayException extends HttpException {
    */
   constructor(
     code: ErrorCode,
-    showToUser?: ShowToUser,
+    details?: ExceptionDetails,
     descriptionOrOptions: string | HttpExceptionOptions = 'Bad Gateway',
   ) {
     const { description, httpExceptionOptions } =
@@ -49,7 +49,7 @@ export class cBadGatewayException extends HttpException {
       HttpException.createBody(
         {
           code,
-          showToUser,
+          details,
         },
         description,
         HttpStatus.BAD_GATEWAY,

@@ -3,7 +3,7 @@ import {
   HttpExceptionOptions,
   HttpStatus,
 } from '@nestjs/common';
-import { ErrorCode, ShowToUser } from './-types';
+import { ErrorCode, ExceptionDetails } from './-types';
 /**
  * Defines an HTTP exception for *Not Acceptable* type errors.
  *
@@ -38,7 +38,7 @@ export class cNotAcceptableException extends HttpException {
    */
   constructor(
     code: ErrorCode,
-    showToUser?: ShowToUser,
+    details?: ExceptionDetails,
     descriptionOrOptions: string | HttpExceptionOptions = 'Not Acceptable',
   ) {
     const { description, httpExceptionOptions } =
@@ -48,7 +48,7 @@ export class cNotAcceptableException extends HttpException {
       HttpException.createBody(
         {
           code,
-          showToUser,
+          details,
         },
         description,
         HttpStatus.NOT_ACCEPTABLE,

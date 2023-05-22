@@ -3,7 +3,7 @@ import {
   HttpExceptionOptions,
   HttpStatus,
 } from '@nestjs/common';
-import { ErrorCode, ShowToUser } from './-types';
+import { ErrorCode, ExceptionDetails } from './-types';
 /**
  * Defines an HTTP exception for *ImATeapotException* type errors.
  *
@@ -41,7 +41,7 @@ export class cImATeapotException extends HttpException {
    */
   constructor(
     code: ErrorCode,
-    showToUser?: ShowToUser,
+    details?: ExceptionDetails,
     descriptionOrOptions: string | HttpExceptionOptions = `I'm a teapot`,
   ) {
     const { description, httpExceptionOptions } =
@@ -51,7 +51,7 @@ export class cImATeapotException extends HttpException {
       HttpException.createBody(
         {
           code,
-          showToUser,
+          details,
         },
         description,
         HttpStatus.I_AM_A_TEAPOT,

@@ -12,6 +12,8 @@ export class AllExceptionsFilter extends BaseExceptionFilter {
       const response = ctx.getResponse<Response>();
 
       response.send(ForbiddenExceptionData.getResponse());
+    } else {
+      console.log(exception);
     }
     super.catch(exception, host);
   }

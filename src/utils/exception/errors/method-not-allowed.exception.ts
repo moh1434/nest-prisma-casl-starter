@@ -3,7 +3,7 @@ import {
   HttpExceptionOptions,
   HttpStatus,
 } from '@nestjs/common';
-import { ErrorCode, ShowToUser } from './-types';
+import { ErrorCode, ExceptionDetails } from './-types';
 /**
  * Defines an HTTP exception for *Method Not Allowed* type errors.
  *
@@ -38,7 +38,7 @@ export class cMethodNotAllowedException extends HttpException {
    */
   constructor(
     code: ErrorCode,
-    showToUser?: ShowToUser,
+    details?: ExceptionDetails,
     descriptionOrOptions: string | HttpExceptionOptions = 'Method Not Allowed',
   ) {
     const { description, httpExceptionOptions } =
@@ -48,7 +48,7 @@ export class cMethodNotAllowedException extends HttpException {
       HttpException.createBody(
         {
           code,
-          showToUser,
+          details,
         },
         description,
         HttpStatus.METHOD_NOT_ALLOWED,

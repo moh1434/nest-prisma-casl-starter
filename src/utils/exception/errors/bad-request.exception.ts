@@ -3,7 +3,7 @@ import {
   HttpExceptionOptions,
   HttpStatus,
 } from '@nestjs/common';
-import { ErrorCode, ShowToUser } from './-types';
+import { ErrorCode, ExceptionDetails } from './-types';
 /**
  * Defines an HTTP exception for *Bad Request* type errors.
  *
@@ -38,9 +38,10 @@ export class cBadRequestException extends HttpException {
    */
   constructor(
     code: ErrorCode,
-    showToUser?: ShowToUser,
+    details?: ExceptionDetails,
     descriptionOrOptions: string | HttpExceptionOptions = 'Bad Request',
   ) {
+    console.log('Bad Request Bad Request');
     const { description, httpExceptionOptions } =
       HttpException.extractDescriptionAndOptionsFrom(descriptionOrOptions);
 
@@ -48,7 +49,7 @@ export class cBadRequestException extends HttpException {
       HttpException.createBody(
         {
           code,
-          showToUser,
+          details,
         },
         description,
         HttpStatus.BAD_REQUEST,

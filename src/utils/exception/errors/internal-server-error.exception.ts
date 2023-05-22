@@ -3,7 +3,7 @@ import {
   HttpExceptionOptions,
   HttpStatus,
 } from '@nestjs/common';
-import { ErrorCode, ShowToUser } from './-types';
+import { ErrorCode, ExceptionDetails } from './-types';
 /**
  * Defines an HTTP exception for *Internal Server Error* type errors.
  *
@@ -38,7 +38,7 @@ export class cInternalServerErrorException extends HttpException {
    */
   constructor(
     code: ErrorCode,
-    showToUser?: ShowToUser,
+    details?: ExceptionDetails,
     descriptionOrOptions:
       | string
       | HttpExceptionOptions = 'Internal Server Error',
@@ -50,7 +50,7 @@ export class cInternalServerErrorException extends HttpException {
       HttpException.createBody(
         {
           code,
-          showToUser,
+          details,
         },
         description,
         HttpStatus.INTERNAL_SERVER_ERROR,

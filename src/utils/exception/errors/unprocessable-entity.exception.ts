@@ -3,7 +3,7 @@ import {
   HttpExceptionOptions,
   HttpStatus,
 } from '@nestjs/common';
-import { ErrorCode, ShowToUser } from './-types';
+import { ErrorCode, ExceptionDetails } from './-types';
 /**
  * Defines an HTTP exception for *Unprocessable Entity* type errors.
  *
@@ -38,7 +38,7 @@ export class cUnprocessableEntityException extends HttpException {
    */
   constructor(
     code: ErrorCode,
-    showToUser?: ShowToUser,
+    details?: ExceptionDetails,
     descriptionOrOptions:
       | string
       | HttpExceptionOptions = 'Unprocessable Entity',
@@ -50,7 +50,7 @@ export class cUnprocessableEntityException extends HttpException {
       HttpException.createBody(
         {
           code,
-          showToUser,
+          details,
         },
         description,
         HttpStatus.UNPROCESSABLE_ENTITY,

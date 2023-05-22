@@ -9,10 +9,10 @@ export type ErrorCode =
 
 type ShowToUserType = 'snackbar' | 'alert';
 
-export interface ShowToUser {
+export interface ExceptionDetails {
+  message: string | string[];
+  showAs?: ShowToUserType;
   title?: string;
-  message: string;
-  type: ShowToUserType;
 }
 
 //Create custom exceptions:

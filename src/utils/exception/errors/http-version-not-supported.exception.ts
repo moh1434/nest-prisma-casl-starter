@@ -3,7 +3,7 @@ import {
   HttpExceptionOptions,
   HttpStatus,
 } from '@nestjs/common';
-import { ErrorCode, ShowToUser } from './-types';
+import { ErrorCode, ExceptionDetails } from './-types';
 /**
  * Defines an HTTP exception for *Http Version Not Supported* type errors.
  *
@@ -38,7 +38,7 @@ export class cHttpVersionNotSupportedException extends HttpException {
    */
   constructor(
     code: ErrorCode,
-    showToUser?: ShowToUser,
+    details?: ExceptionDetails,
     descriptionOrOptions:
       | string
       | HttpExceptionOptions = 'HTTP Version Not Supported',
@@ -50,7 +50,7 @@ export class cHttpVersionNotSupportedException extends HttpException {
       HttpException.createBody(
         {
           code,
-          showToUser,
+          details,
         },
         description,
         HttpStatus.HTTP_VERSION_NOT_SUPPORTED,
