@@ -4,7 +4,7 @@ import {
   IsEnum,
   IsNumber,
   IsString,
-  validateOrReject,
+  validateSync,
 } from 'class-validator';
 
 export enum NODE_ENV {
@@ -53,10 +53,9 @@ export class Env {
   @IsString()
   readonly S3_BUCKET = process.env.S3_BUCKET;
 
-  private async validateEnv() {
-    try {
-      await validateOrReject(this);
-    } catch (errors) {
+  private validateEnv() {
+    const errors = validateSync(this);
+    if (errors.length) {
       console.log({
         target: errors[0].target,
         property: errors[0].property,
