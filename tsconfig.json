@@ -25,7 +25,7 @@
     "noFallthroughCasesInSwitch": false,
     "typeRoots": [
       "./node_modules/@types",
-      "src/utils/types.d.ts"
+      "src/utils/types.ts"
     ]
   }
 }
