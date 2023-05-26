@@ -35,6 +35,9 @@ export class PrismaErrorInterceptor implements NestInterceptor {
           if (error.code == 'P2003') {
             throw new cInternalServerErrorException('FOREIGN_KEY_FAILED');
           }
+        } else if (error.constructor.name === 'PrismaClientValidationError') {
+          //wrong select:{}, or wrong data:{} ts types
+          throw new cInternalServerErrorException('INVlIAD_DB');
         }
         throw error;
       }),
