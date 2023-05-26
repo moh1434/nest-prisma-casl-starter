@@ -8,6 +8,7 @@ export type ErrorCode =
   | 'INVlIAD_DB'
   | 'INVALID_CREDENTIALS'
   | 'INVALID_INPUT_ZOD'
+  | 'SERVER_ERROR'
   | 'PERMISSION_DENIED_CASL';
 
 type ShowToUserType = 'snackbar' | 'alert';
