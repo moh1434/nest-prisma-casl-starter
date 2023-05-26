@@ -8,7 +8,7 @@
   "scripts": {
     "generate_tsoa": "npx tsoa spec -c ./tsoa.json",
     "generate_casl": "npx ts-node src/utils/casl/generated/config.ts",
-    "build": "NODE_ENV=production nest build",
+    "build": "NODE_ENV=production nest build --webpack",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "NODE_ENV=development nest start",
     "start:dev": "NODE_ENV=development nest start --watch",
