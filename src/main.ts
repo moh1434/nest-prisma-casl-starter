@@ -17,6 +17,9 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { tsoaResponseToNestDocument } from './utils/tsoaResponseToNestDocument';
 import { ZodValidationPipe } from './utils/exception/zod-validation-pipe';
 
+import { createAgent } from '@forestadmin/agent';
+import { createSqlDataSource } from '@forestadmin/datasource-sql';
+
 async function bootstrap() {
   dotenv.config();
 
@@ -72,6 +75,24 @@ async function bootstrap() {
 
   SwaggerModule.setup('api', app, document);
   //end: Swagger
+
+  console.log({
+    authSecret: process.env.FOREST_AUTH_SECRET!,
+    envSecret: process.env.FOREST_ENV_SECRET!,
+    isProduction: process.env.NODE_ENV! === 'production',
+    typingsPath: './typings.ts',
+    typingsMaxDepth: 5,
+  });
+  const agent = createAgent({
+    authSecret: process.env.FOREST_AUTH_SECRET!,
+    envSecret: process.env.FOREST_ENV_SECRET!,
+    isProduction: process.env.NODE_ENV! === 'production',
+    typingsPath: './typings.ts',
+    typingsMaxDepth: 5,
+  })
+    // Create your SQL datasource
+    .addDataSource(createSqlDataSource(process.env.DATABASE_URL!));
+  await agent.mountOnNestJs(app).start();
 
   await app.listen(env.port);
 }
