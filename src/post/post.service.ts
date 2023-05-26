@@ -4,6 +4,8 @@ import { PrismaService } from 'nestjs-prisma';
 import { UserService } from '../user/user.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { cForbiddenException } from '../utils/exception/errors/forbidden.exception';
+import { PaginationArgs, paginator } from '../utils/paginators.ts/paginator';
+import { PaginatorDto } from '../utils/paginators.ts/dto/paginator.normal.dto';
 
 @Injectable()
 export class PostService {
@@ -24,14 +26,25 @@ export class PostService {
     },
   } satisfies Prisma.PostSelect;
 
-  async findByAuthorId(id: string) {
-    const posts = await this.prisma.post.findMany({
-      where: {
+  async findByAuthorId(id: string, paginatorDto: PaginatorDto) {
+    const paginatorQuery = async (paginationArgs: PaginationArgs) => {
+      const where = {
         authorId: id,
         isPublished: true,
-      },
-      select: PostService.select,
-    });
+      };
+      return {
+        total: await this.prisma.post.count({ where }),
+        data: await this.prisma.post.findMany({
+          ...paginationArgs,
+          where,
+          select: PostService.select,
+        }),
+      };
+    };
+    const posts = await paginator<ReturnType<typeof paginatorQuery>>(
+      paginatorQuery,
+      paginatorDto,
+    );
 
     return posts;
   }

@@ -6,6 +6,8 @@ import { Prisma } from '@prisma/client';
 
 import { FilePrefix } from '../utils/constant';
 import { S3Service } from '../s3/s3.service';
+import { PaginationArgs, paginator } from '../utils/paginators.ts/paginator';
+import { PaginatorDto } from '../utils/paginators.ts/dto/paginator.normal.dto';
 
 @Injectable()
 export class UserService {
@@ -15,10 +17,21 @@ export class UserService {
     avatar: true,
   } satisfies Prisma.UserSelect;
 
-  async findAll() {
-    const users = await this.prisma.user.findMany({
-      select: UserService.select,
-    });
+  async findAll(paginatorDto: PaginatorDto) {
+    const paginatorQuery = async (paginationArgs: PaginationArgs) => {
+      return {
+        total: await this.prisma.user.count(),
+        data: await this.prisma.user.findMany({
+          ...paginationArgs,
+          select: UserService.select,
+        }),
+      };
+    };
+    const users = await paginator<ReturnType<typeof paginatorQuery>>(
+      paginatorQuery,
+      paginatorDto,
+    );
+
     return users;
   }
 

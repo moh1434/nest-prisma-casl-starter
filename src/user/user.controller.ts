@@ -9,6 +9,7 @@ import {
   UseInterceptors,
   UploadedFile,
   Delete,
+  Query,
 } from '@nestjs/common';
 
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -26,6 +27,7 @@ import { JwtUser } from '../auth/auth-utils/user.decorator';
 
 import { UpdateUserWithAvatarDto } from '../auth/dto/update-user.dto';
 import { Request, Route } from 'tsoa';
+import { PaginatorDto } from '../utils/paginators.ts/dto/paginator.normal.dto';
 
 @Route('user')
 @Controller('user')
@@ -37,8 +39,8 @@ export class UserController {
 
   @Roles(UserType.ADMIN)
   @Get('/admin/all')
-  findAll() {
-    return this.userService.findAll();
+  findAll(@Request() @Query() paginatorDto: PaginatorDto) {
+    return this.userService.findAll(paginatorDto);
   }
 
   @Get('me')

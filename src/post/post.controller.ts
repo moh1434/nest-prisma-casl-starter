@@ -7,6 +7,7 @@ import {
   Get,
   Param,
   Post,
+  Query,
   UseInterceptors,
 } from '@nestjs/common';
 import { PostService } from './post.service';
@@ -20,6 +21,7 @@ import { Roles } from '../auth/auth-utils/roles.decorator';
 import { UserType } from '@prisma/client';
 import { cacheMinute } from '../utils/constant';
 import { CacheInterceptor } from '@nestjs/cache-manager';
+import { PaginatorDto } from '../utils/paginators.ts/dto/paginator.normal.dto';
 
 @Route('post')
 @Controller('post')
@@ -34,8 +36,11 @@ export class PostController {
   @UseInterceptors(CacheInterceptor)
   @CacheTTL(cacheMinute * 2) // override TTL to 2 minutes
   @Get('/author/:id')
-  async findByAuthorId(@Request() @Param('id') id: string) {
-    return await this.postService.findByAuthorId(id);
+  async findByAuthorId(
+    @Request() @Param('id') id: string,
+    @Request() @Query() paginatorDto: PaginatorDto,
+  ) {
+    return await this.postService.findByAuthorId(id, paginatorDto);
   }
 
   @Get('/:id')
